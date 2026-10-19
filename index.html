@@ -45,13 +45,13 @@
           <details class="definitions"><summary>Calculation methods and limitations</summary><p>Quantiles are Hyndman–Fan Type 7 (linear interpolation). Population and sample variance are shown separately using a numerically stabilized algorithm; sample variance requires at least two observations. Missing and invalid values are excluded, never treated as zero. The grouped frequency distribution depends on the chosen number of bins.</p></details>
           <h3>Frequency distribution</h3>
           <figure class="visual"><div id="frequency-chart" class="chart-shell"></div><figcaption>Histogram · Class boundaries are left-inclusive; the final bin includes its upper boundary. Consult the frequency table for exact counts.</figcaption></figure>
-          <div id="frequency-table" class="table-scroll"></div>
+          <div id="frequency-table" class="table-scroll" tabindex="0" role="region" aria-label="Frequency distribution table"></div>
           <h3>Cumulative-frequency ogive</h3>
           <figure class="visual"><div id="ogive-chart" class="chart-shell"></div><figcaption>Less-than ogive based on grouped frequencies. Each point marks a class upper boundary.</figcaption></figure>
-          <div id="ogive-table" class="table-scroll"></div>
+          <div id="ogive-table" class="table-scroll" tabindex="0" role="region" aria-label="Cumulative frequency table"></div>
           <h3>Box plot</h3>
           <figure class="visual"><div id="boxplot-chart" class="chart-shell"></div><figcaption>Type-7 quartiles; Tukey-style 1.5×IQR fences; whiskers end at observed in-fence values. Outliers remain in the descriptive statistics.</figcaption></figure>
-          <div id="boxplot-table" class="table-scroll"></div>
+          <div id="boxplot-table" class="table-scroll" tabindex="0" role="region" aria-label="Box plot values table"></div>
           <section id="export-controls" class="exports hidden" aria-labelledby="exports-title">
             <h3 id="exports-title">Download reproducible results</h3>
             <p>Reports include derived statistics and numeric outlier values, but do not copy full original rows. Inspect files before sharing.</p>
@@ -67,7 +67,7 @@
             </div>
           </section>
           <h3>CSV preview</h3>
-          <div id="preview" class="table-scroll"></div>
+          <div id="preview" class="table-scroll" tabindex="0" role="region" aria-label="CSV preview table"></div>
         </div>
       </div>
     </section>

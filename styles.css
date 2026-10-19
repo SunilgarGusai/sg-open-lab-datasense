@@ -22,4 +22,5 @@
 /* DS-12: explicit table titles and focus target, preserving responsive scroll areas. */
 table caption.table-caption {text-align:left;font-weight:700;color:var(--ink);padding:10px 8px 6px;white-space:normal;font-size:.86rem}
 #main:focus {outline:none}
+.table-scroll:focus-visible {outline:3px solid var(--accent);outline-offset:3px}
 @media (forced-colors:active) {button,.status,.metric,.quality span {forced-color-adjust:auto} .chart-shell svg {forced-color-adjust:auto}}

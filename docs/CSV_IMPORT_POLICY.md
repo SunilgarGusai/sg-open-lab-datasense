@@ -19,4 +19,4 @@ A numerical candidate must contain at least one valid finite number; nonnumeric 
 
 `parseCsvBytes` checks byte limits before decoding, uses UTF-8 fatal mode, and never evaluates any content as code. UI uses DOM `textContent` for all CSV headers, fields and uploaded filenames. Only local built-in assets are referenced; no data-upload code or analytics is present in alpha. **A real deployed-browser network audit remains mandatory before promoting a privacy promise in public marketing.**
 
-If a new file is invalid, prior results are hidden so the user cannot mistake stale calculations for a new upload. CSV export safety is a separate, not-yet-implemented milestone.
+If a new file is invalid, prior results are hidden so the user cannot mistake stale calculations for a new upload. CSV exports are implemented with formula-prefix mitigation and quoting as documented in the [export policy](EXPORT_POLICY.md); behavior in the intended spreadsheet applications still requires verification.

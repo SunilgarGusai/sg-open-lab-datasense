@@ -152,3 +152,68 @@ test('DS-13 staging rejects a symlinked parent of an otherwise allowed document'
   assert.notEqual(result.status, 0);
   assert.match(result.stderr, /Symbolic links are not publishable/);
 });
+
+async function previousSite(root) {
+  await mkdir(path.join(root, '_site'));
+  await writeFile(path.join(root, '_site/keep.txt'), 'previous verified artifact');
+}
+
+async function assertPreviousSite(root) {
+  assert.deepEqual(await listFiles(path.join(root, '_site')), ['keep.txt']);
+  assert.equal(await readFile(path.join(root, '_site/keep.txt'), 'utf8'), 'previous verified artifact');
+}
+
+test('DS-13 staging preserves the previous site when the browser entry is missing', async (t) => {
+  const root = await fixture(t);
+  await previousSite(root);
+  await rm(path.join(root, 'dist/app/browser.js'));
+  const result = stage(root);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /Missing browser entry: dist\/app\/browser\.js/);
+  await assertPreviousSite(root);
+});
+
+test('DS-13 staging preserves the previous site when a transitive export is missing', async (t) => {
+  const root = await fixture(t);
+  await previousSite(root);
+  await writeFile(path.join(root, 'dist/app/browser.js'), "import { value } from '../core/summary.js';\n");
+  await writeFile(path.join(root, 'dist/core/summary.js'), "export { value } from './missing.js';\n");
+  const result = stage(root);
+  assert.notEqual(result.status, 0);
+  assert.match(result.stderr, /Unresolved module dependency.*dist\/core\/summary\.js.*\.\/missing\.js/);
+  await assertPreviousSite(root);
+});
+
+for (const [description, source, expectedError] of [
+  ['missing dynamic import', "void import('./missing.js');", /Unresolved module dependency/],
+  ['bare module dependency', "import 'unbundled-package';", /Unsupported module dependency/],
+  ['external module dependency', "export * from 'https://example.invalid/module.js';", /Unsupported module dependency/],
+  ['module outside the artifact', "import '../../private.js';", /Unresolved module dependency/],
+  ['computed dynamic dependency', "const name = './charts.js'; void import(name);", /Dynamic module dependency must be a string literal/],
+  ['malformed module syntax', "import { value from '../core/summary.js';", /Invalid JavaScript module/],
+]) {
+  test(`DS-13 staging preserves the previous site for ${description}`, async (t) => {
+    const root = await fixture(t);
+    await previousSite(root);
+    await writeFile(path.join(root, 'dist/app/browser.js'), source);
+    const result = stage(root);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, expectedError);
+    await assertPreviousSite(root);
+  });
+}
+
+test('DS-13 staging accepts complete static and literal-dynamic module graphs', async (t) => {
+  const root = await fixture(t);
+  await writeFile(path.join(root, 'dist/app/browser.js'), [
+    "import { value } from '../core/summary.js';",
+    "export { value } from '../core/summary.js';",
+    "export * from '../core/summary.js';",
+    "void import('../core/summary.js');",
+    "// import './comment-only-missing.js';",
+    "const label = \"import './string-only-missing.js';\";",
+  ].join('\n'));
+  const result = stage(root);
+  assert.equal(result.status, 0, result.stderr);
+  assert.ok((await listFiles(path.join(root, '_site'))).includes('dist/core/summary.js'));
+});

@@ -1,0 +1,11 @@
+{
+  "origin": "http://127.0.0.1:8765",
+  "navigation": "real HTTP",
+  "csp": "original meta retained",
+  "sourceHashExpected": "acb56dadc7ec51c4f2a3a74be0b2c562019f8a669cc7ee365c86fcadfc39e6f9",
+  "sourceHashObserved": "acb56dadc7ec51c4f2a3a74be0b2c562019f8a669cc7ee365c86fcadfc39e6f9",
+  "valid": 10,
+  "mean": 23.4,
+  "status": "PASS",
+  "scope": "One built-in sample and one JSON download using the in-app browser; not a full browser audit"
+}

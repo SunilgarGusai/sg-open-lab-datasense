@@ -168,9 +168,12 @@ def snapshot(page, folder, state):
 
 def storage(page, context):
     return {"cookies": context.cookies(), "service_workers": len(context.service_workers),
-            **page.evaluate("""() => ({
+            **page.evaluate("""async () => ({
                 localStorageKeys: Object.keys(localStorage),
-                sessionStorageKeys: Object.keys(sessionStorage)
+                sessionStorageKeys: Object.keys(sessionStorage),
+                indexedDBDatabases: typeof indexedDB.databases === 'function'
+                    ? await indexedDB.databases() : null,
+                cacheKeys: 'caches' in window ? await caches.keys() : null
             })""")}
 
 
@@ -221,7 +224,7 @@ def verify_accessibility(page, expect):
         expect(chart).to_have_count(1)
         expect(chart.locator("title")).not_to_be_empty()
         expect(chart.locator("desc")).not_to_be_empty()
-        refs = chart.evaluate("""el => el.getAttribute('aria-labelledby').split(/\s+/)
+        refs = chart.evaluate(r"""el => el.getAttribute('aria-labelledby').split(/\s+/)
             .map(id => ({id, present: !!document.getElementById(id),
                         text: document.getElementById(id)?.textContent}))""")
         require(all(item["present"] and item["text"] for item in refs),
@@ -428,6 +431,20 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
         require(not dialogs, f"Unexpected dialogs: {dialogs}")
         return {"headers_and_cells_rendered_as_text": True, **snapshot(page, folder, "hostile-import")}
 
+    def keyboard_tables():
+        observations = []
+        for target in ("frequency-table", "ogive-table", "boxplot-table", "preview"):
+            region = page.locator(f"#{target}")
+            region.focus()
+            expect(region).to_be_focused()
+            overflow = region.evaluate("el => el.scrollWidth > el.clientWidth + 1")
+            region.press("ArrowRight")
+            if overflow:
+                page.wait_for_function("id => document.getElementById(id).scrollLeft > 0", arg=target)
+            observations.append({"region": target, "overflow": overflow,
+                                 "scrollLeft": region.evaluate("el => el.scrollLeft")})
+        return observations
+
     def nonnumeric_import():
         upload("ds13-nonnumeric.csv", b"name,note\nAlice,hello\nBob,world\n")
         expect(page.locator("#quality")).to_contain_text("Valid: 0")
@@ -437,6 +454,9 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
         return snapshot(page, folder, "nonnumeric")
 
     def malformed_retry():
+        # Establish visible valid results first, so error cleanup is exercised.
+        upload("ds13-synthetic.csv", SYNTHETIC)
+        expect(page.locator("#export-controls")).to_be_visible()
         payload = {"name": "ds13-malformed.csv", "mimeType": "text/csv", "buffer": b'value\n"not closed\n'}
         # Mutation counts prove that the second identical selection invoked the
         # application again instead of merely matching the previous error text.
@@ -484,6 +504,7 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
         if checks.run("synthetic-file-import-and-secure-hash", numeric_import):
             checks.run("labels-table-and-chart-accessible-names", lambda: verify_accessibility(page, expect))
             checks.run("numeric-column-and-bin-selectors", selections)
+            checks.run("scrolling-tables-are-keyboard-accessible", keyboard_tables)
             checks.run("numeric-layout", lambda: snapshot(page, folder, "numeric"))
             phase[0] = "axe-numeric"
             checks.run("axe-numeric-serious-critical-gate", lambda: axe_scan(page, axe_source, folder, "numeric"))

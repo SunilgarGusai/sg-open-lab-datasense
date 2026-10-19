@@ -3,6 +3,7 @@ import path from 'node:path';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
 import { parseArgs } from 'node:util';
+import ts from 'typescript';
 
 // This is an explicit publication allowlist, not a copy of the repository.
 const policyDocuments = ['STATISTICAL_METHODS.md', 'EXPORT_POLICY.md', 'CSV_IMPORT_POLICY.md', 'PRIVACY.md', 'PRIVACY_POLICY.md'];
@@ -15,6 +16,35 @@ async function statIfPresent(filename) {
 function assertRegular(stat, name) {
   if (stat?.isSymbolicLink()) throw new Error(`Symbolic links are not publishable: ${name}`);
   if (!stat?.isFile()) throw new Error(`Missing required file: ${name}`);
+}
+
+function validateModules(files) {
+  if (!files.has('dist/app/browser.js')) throw new Error('Missing browser entry: dist/app/browser.js');
+  for (const [name, bytes] of files) {
+    if (!name.startsWith('dist/') || !name.endsWith('.js')) continue;
+    const source = ts.createSourceFile(name, bytes.toString('utf8'), ts.ScriptTarget.ES2022, true, ts.ScriptKind.JS);
+    if (source.parseDiagnostics.length) throw new Error(`Invalid JavaScript module: ${name}`);
+    function checkDependency(specifier) {
+      if (!(specifier.startsWith('./') || specifier.startsWith('../')) || !specifier.endsWith('.js') || /[\\?#%\u0000-\u0020]/.test(specifier)) {
+        throw new Error(`Unsupported module dependency in ${name}: ${specifier}`);
+      }
+      const target = path.posix.normalize(path.posix.join(path.posix.dirname(name), specifier));
+      if (!target.startsWith('dist/') || !files.has(target)) throw new Error(`Unresolved module dependency in ${name}: ${specifier}`);
+    }
+    function visit(node) {
+      if ((ts.isImportDeclaration(node) || ts.isExportDeclaration(node)) && node.moduleSpecifier) {
+        if (!ts.isStringLiteral(node.moduleSpecifier)) throw new Error(`Invalid module dependency in ${name}`);
+        checkDependency(node.moduleSpecifier.text);
+      }
+      if (ts.isCallExpression(node) && node.expression.kind === ts.SyntaxKind.ImportKeyword) {
+        const specifier = node.arguments[0];
+        if (!specifier || !ts.isStringLiteralLike(specifier)) throw new Error(`Dynamic module dependency must be a string literal: ${name}`);
+        checkDependency(specifier.text);
+      }
+      ts.forEachChild(node, visit);
+    }
+    visit(source);
+  }
 }
 
 async function stageSite(root, commit) {
@@ -63,7 +93,7 @@ async function stageSite(root, commit) {
   files.set('index.html', Buffer.from(html));
   files.set('styles.css', await readSource('styles.css'));
   await collectDirectory('dist', name => name.endsWith('.js'), true);
-  if (![...files.keys()].some(name => name.startsWith('dist/'))) throw new Error('No compiled JavaScript found in dist');
+  validateModules(files);
   await collectDirectory('public/examples', name => name.endsWith('.csv'));
   for (const filename of policyDocuments) {
     const name = `docs/${filename}`;

@@ -1,0 +1,151 @@
+{
+  "schema": "sg-datasense-analysis-v1",
+  "app": {
+    "name": "SG Open Lab DataSense",
+    "version": "0.4.0-alpha.1"
+  },
+  "source": {
+    "name": "Synthetic sample scores",
+    "bytes": 62,
+    "sha256": "acb56dadc7ec51c4f2a3a74be0b2c562019f8a669cc7ee365c86fcadfc39e6f9"
+  },
+  "selection": {
+    "id": "column-0",
+    "label": "score"
+  },
+  "dataQuality": {
+    "total": 10,
+    "valid": 10,
+    "missing": 0,
+    "invalid": 0
+  },
+  "definitions": {
+    "quantiles": "Hyndman-Fan Type 7 (linear interpolation)",
+    "variance": "Welford, population n / sample n-1",
+    "missingValues": "blank, NA, N/A, null, hyphen (trimmed; case-insensitive)",
+    "binning": "equal-width-left-closed-final-right-closed",
+    "boxplot": "Type-7 quartiles, 1.5*IQR Tukey-style fences, whiskers at extreme observed in-fence values",
+    "outliers": "observations outside fences (not removed from descriptive statistics)"
+  },
+  "frequency": {
+    "requestedBins": 5,
+    "actualBins": 5,
+    "isConstant": false
+  },
+  "computed": {
+    "summary": {
+      "n": 10,
+      "sum": 234,
+      "min": 12,
+      "max": 36,
+      "range": 24,
+      "mean": 23.4,
+      "median": 22.5,
+      "q1": 18,
+      "q3": 29.25,
+      "iqr": 11.25,
+      "populationVariance": 57.239999999999995,
+      "sampleVariance": 63.599999999999994,
+      "populationStandardDeviation": 7.565712127751095,
+      "sampleStandardDeviation": 7.974960814950754,
+      "mode": [
+        18
+      ],
+      "modeStatus": "single",
+      "method": {
+        "quantiles": "Hyndman-Fan-7",
+        "variance": "Welford-offset-stabilized",
+        "missingPolicy": "blank-NA-N/A-null-hyphen"
+      }
+    },
+    "bins": [
+      {
+        "lower": 12,
+        "upper": 16.8,
+        "count": 2,
+        "cumulativeCount": 2,
+        "relativeFrequency": 0.2,
+        "rightClosed": false
+      },
+      {
+        "lower": 16.8,
+        "upper": 21.6,
+        "count": 3,
+        "cumulativeCount": 5,
+        "relativeFrequency": 0.3,
+        "rightClosed": false
+      },
+      {
+        "lower": 21.6,
+        "upper": 26.4,
+        "count": 1,
+        "cumulativeCount": 6,
+        "relativeFrequency": 0.1,
+        "rightClosed": false
+      },
+      {
+        "lower": 26.4,
+        "upper": 31.2,
+        "count": 2,
+        "cumulativeCount": 8,
+        "relativeFrequency": 0.2,
+        "rightClosed": false
+      },
+      {
+        "lower": 31.2,
+        "upper": 36,
+        "count": 2,
+        "cumulativeCount": 10,
+        "relativeFrequency": 0.2,
+        "rightClosed": true
+      }
+    ],
+    "ogive": [
+      {
+        "x": 12,
+        "cumulative": 0,
+        "percent": 0
+      },
+      {
+        "x": 16.8,
+        "cumulative": 2,
+        "percent": 20
+      },
+      {
+        "x": 21.6,
+        "cumulative": 5,
+        "percent": 50
+      },
+      {
+        "x": 26.4,
+        "cumulative": 6,
+        "percent": 60
+      },
+      {
+        "x": 31.2,
+        "cumulative": 8,
+        "percent": 80
+      },
+      {
+        "x": 36,
+        "cumulative": 10,
+        "percent": 100
+      }
+    ],
+    "boxplot": {
+      "q1": 18,
+      "median": 22.5,
+      "q3": 29.25,
+      "iqr": 11.25,
+      "lowerFence": 1.125,
+      "upperFence": 46.125,
+      "lowerWhisker": 12,
+      "upperWhisker": 36,
+      "outliers": []
+    }
+  },
+  "warnings": [
+    "Statistical results apply only to valid numeric observations in the selected column.",
+    "Histogram and ogive are grouped approximations; the box plot uses ungrouped observations."
+  ]
+}
