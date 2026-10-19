@@ -48,6 +48,8 @@ jobs:
         run: node scripts/stage-site.mjs 2>&1 | tee evidence/ci/site-package.log
       - name: Install browser engines
         run: python -m playwright install --with-deps chromium firefox webkit
+      - name: Isolate WebKit CSP and screenshot instrumentation
+        run: python scripts/probe_select_csp.py --browser webkit --site-root _site --axe node_modules/axe-core/axe.min.js --output evidence/webkit-csp-diagnostic
       - name: Exercise packaged site at real local HTTP origins and project paths
         run: |
           browser_failures=0

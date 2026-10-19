@@ -1,0 +1,8 @@
+{
+  "commit": "d55f5abb661f8945bad0e1c9d5cbb75b719b4d8d",
+  "cleanCheckout": "ds13-clean-checkout",
+  "originalWorkingCopyManifestSha256": "149654b91b666d8843abf416b08bf9019d57e87a56483738f8eede3108424afa",
+  "cleanCheckoutManifestSha256": "149654b91b666d8843abf416b08bf9019d57e87a56483738f8eede3108424afa",
+  "result": "PASS",
+  "scope": "Two independent npm ci builds with TypeScript5.8.3 on Node24.19.0 Windows; identical complete site file/hash manifest"
+}

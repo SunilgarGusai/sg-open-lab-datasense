@@ -161,9 +161,20 @@ def geometry(page):
     return dimensions
 
 
-def snapshot(page, folder, state):
-    page.screenshot(path=str(folder / f"{state}.png"), full_page=True)
-    return {"screenshot": f"{state}.png", "dimensions": geometry(page)}
+WEBKIT_SCREENSHOT_LIMIT = (
+    "Not captured: Playwright's WebKit screenshot preparation injects an inline "
+    "body {} stylesheet and triggers the unchanged CSP. Geometry and behavioral "
+    "checks still run; Chromium and Firefox supply screenshots. See the isolated "
+    "probe_select_csp.py diagnostic and Playwright v1.63 screenshotter.ts."
+)
+
+
+def snapshot(page, folder, state, capture=True):
+    if capture:
+        page.screenshot(path=str(folder / f"{state}.png"), full_page=True)
+    return {"screenshot": f"{state}.png" if capture else None,
+            "screenshot_limitation": None if capture else WEBKIT_SCREENSHOT_LIMIT,
+            "dimensions": geometry(page)}
 
 
 def storage(page, context):
@@ -321,8 +332,11 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
     phase = ["navigation"]
     requests, responses, failed_requests, console, page_errors, dialogs = [], [], [], [], [], []
     checks = Checks()
+    capture_screenshots = browser.browser_type.name != "webkit"
     result = {"url": url, "viewport": {"width": width, "height": height},
               "started_at": utc_now(), "evidence_directory": str(folder),
+              "screenshots_captured": capture_screenshots,
+              "screenshot_limitation": None if capture_screenshots else WEBKIT_SCREENSHOT_LIMIT,
               "checks": checks.items, "caveat": CAVEAT}
 
     def request_seen(request):
@@ -381,14 +395,16 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
     def keyboard():
         page.keyboard.press("Tab")
         expect(page.locator(".skip-link")).to_be_focused()
-        page.screenshot(path=str(folder / "skip-link-focused.png"), full_page=False)
+        if capture_screenshots:
+            page.screenshot(path=str(folder / "skip-link-focused.png"), full_page=False)
         page.keyboard.press("Enter")
         expect(page.locator("#main")).to_be_focused()
         page.locator("#sample-scores").focus()
         page.keyboard.press("Enter")
         expect(page.locator("#quality")).to_contain_text("Valid: 10")
         expect(page.locator("#export-controls")).to_be_visible()
-        return {"first_tab_stop": "skip-link", "skip_target": "main", "sample_button": "Enter activated"}
+        return {"first_tab_stop": "skip-link", "skip_target": "main", "sample_button": "Enter activated",
+                "screenshot": "skip-link-focused.png" if capture_screenshots else None}
 
     def numeric_import():
         upload("ds13-synthetic.csv", SYNTHETIC)
@@ -429,7 +445,8 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
         expect(page.locator("#preview img, #preview svg, #preview script")).to_have_count(0)
         require(page.evaluate("window.__ds13Xss") == 0, "Imported markup executed")
         require(not dialogs, f"Unexpected dialogs: {dialogs}")
-        return {"headers_and_cells_rendered_as_text": True, **snapshot(page, folder, "hostile-import")}
+        return {"headers_and_cells_rendered_as_text": True,
+                **snapshot(page, folder, "hostile-import", capture_screenshots)}
 
     def keyboard_tables():
         observations = []
@@ -451,7 +468,7 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
         expect(page.locator("#statistics")).to_contain_text("No valid numeric values")
         expect(page.locator("#export-controls")).to_be_hidden()
         expect(page.get_by_role("img")).to_have_count(0)
-        return snapshot(page, folder, "nonnumeric")
+        return snapshot(page, folder, "nonnumeric", capture_screenshots)
 
     def malformed_retry():
         # Establish visible valid results first, so error cleanup is exercised.
@@ -482,7 +499,7 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
             attempts.append({"status_mutations_before": before,
                              "status_mutations_after": page.evaluate("window.__ds13StatusChanges")})
         page.evaluate("window.__ds13Observer.disconnect()")
-        return {"same_file_attempts": attempts, **snapshot(page, folder, "malformed")}
+        return {"same_file_attempts": attempts, **snapshot(page, folder, "malformed", capture_screenshots)}
 
     def recovery():
         page.locator("#sample-ties").click()
@@ -494,7 +511,7 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
         upload("ds13-synthetic.csv", SYNTHETIC)
         expect(page.locator("#quality")).to_contain_text("Valid: 10")
         expect(page.locator("#export-controls")).to_be_visible()
-        return {"sample_and_file_recovery": True, **snapshot(page, folder, "recovery")}
+        return {"sample_and_file_recovery": True, **snapshot(page, folder, "recovery", capture_screenshots)}
 
     try:
         if not checks.run("real-origin-navigation-and-fresh-storage", navigation):
@@ -505,7 +522,7 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
             checks.run("labels-table-and-chart-accessible-names", lambda: verify_accessibility(page, expect))
             checks.run("numeric-column-and-bin-selectors", selections)
             checks.run("scrolling-tables-are-keyboard-accessible", keyboard_tables)
-            checks.run("numeric-layout", lambda: snapshot(page, folder, "numeric"))
+            checks.run("numeric-layout", lambda: snapshot(page, folder, "numeric", capture_screenshots))
             phase[0] = "axe-numeric"
             checks.run("axe-numeric-serious-critical-gate", lambda: axe_scan(page, axe_source, folder, "numeric"))
             phase[0] = "downloads"

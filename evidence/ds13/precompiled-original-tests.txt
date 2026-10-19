@@ -1,0 +1,65 @@
+
+> sg-datasense-browser-alpha@0.4.0-alpha.1 test:precompiled
+> node --test tests/numeric.test.mjs tests/csv.test.mjs tests/reports.test.mjs
+
+✔ DS-T017: quoted thousands separator remains invalid numeric input (1.5996ms)
+✔ DS-T018: UTF-8 BOM + non-ASCII content remains intact (0.2191ms)
+✔ DS-T019: RFC-style quoted commas, quotes and multiline fields (0.1362ms)
+✔ DS-T020: case-insensitive duplicate header labels retain unique IDs (0.1544ms)
+✔ DS-T021: malformed quotes reject with actionable errors (0.3874ms)
+✔ DS-T022: header-only CSV yields zero observations (0.2515ms)
+✔ DS-T023: do not auto-convert nonnumeric columns (0.1771ms)
+✔ DS-T024: file size guard applies before decode and on text API (0.163ms)
+✔ DS-T025: 50,001 data rows are rejected, 50k accepted (19.6628ms)
+✔ DS-T039: only missing values return no eligible numeric column (0.2981ms)
+✔ strict UTF-8 decoder rejects corrupt bytes and empty/headerless content (0.6688ms)
+✔ row shapes; blank internal row is retained, trailing newline is not data (0.3507ms)
+✔ quotes and delimiters cannot execute code; user data remains inert strings (0.2735ms)
+✔ DS-T043/044: numeric and frequency results do not depend on preview (0.4963ms)
+✔ NumPy reference basic_1_4 (2.0929ms)
+✔ NumPy reference singleton (0.2394ms)
+✔ NumPy reference constant (0.1823ms)
+✔ NumPy reference unimodal (0.1167ms)
+✔ NumPy reference multimodal (0.1482ms)
+✔ NumPy reference distinct (0.1031ms)
+✔ NumPy reference negative (0.0837ms)
+✔ NumPy reference zeros (0.0971ms)
+✔ NumPy reference ties (0.1036ms)
+✔ NumPy reference large_offset (0.1961ms)
+✔ NumPy reference large_neg_offset (0.2317ms)
+✔ NumPy reference unbalanced (0.2712ms)
+✔ NumPy reference noninteger (0.1171ms)
+✔ NumPy reference symmetric (0.1847ms)
+✔ NumPy reference zero_singleton (0.0867ms)
+✔ NumPy reference extremal_mix (0.097ms)
+✔ NumPy reference empty (0.1504ms)
+✔ DS-T001-004: basic reference values (0.3523ms)
+✔ DS-T005-007: singleton empty constant (1.3699ms)
+✔ DS-T008-010: multimode and no informative mode (0.1296ms)
+✔ DS-T011-016: numeric validation, exclusions, zeros, scientific, nonfinite (0.4442ms)
+✔ DS-T026-027: bin totals, endpoints and relative frequency (0.3623ms)
+✔ DS-T028-029: ogive and constant histogram geometry (0.1952ms)
+✔ DS-T030: outlier flagging, observed whiskers (0.1071ms)
+✔ DS-T031: stable large offsets (0.0728ms)
+✔ DS-T039-042: missing, ties, reorder and endpoints (0.4355ms)
+✔ DS-T043-044: regrouping does not affect statistics; runs deterministic (0.34ms)
+✔ property: 200 deterministic datasets preserve exact frequency membership (10.0312ms)
+✔ performance smoke: 50,000 values analyze without argument exhaustion (18.9209ms)
+✔ DS-T035 CSV escaping quoted fields and the dangerous spreadsheet formula prefixes (1.2947ms)
+✔ DS-T036 export filenames remove paths/control characters (0.2945ms)
+✔ DS-T032 summary CSV roundtrip and reproducibility metadata (0.9072ms)
+✔ DS-T032 frequency and cumulative CSV roundtrip reconcile (0.3131ms)
+✔ DS-T032 exported box summary matches source quartiles and outlier count (0.1854ms)
+✔ DS-T034 deterministic JSON manifest traceable to computation (0.3807ms)
+✔ DS-T034 inconsistent reports fail closed (0.2723ms)
+✔ DS-T032 empty numeric and singleton outcomes reimport (2.5491ms)
+✔ DS-T035 malicious CSV column labels stay spreadsheet-inert in reports (0.4303ms)
+✔ DS-T034 ogive and boxplot invariants for all-equal data (0.4257ms)
+ℹ tests 53
+ℹ suites 0
+ℹ pass 53
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 130.9387

@@ -1,0 +1,92 @@
+
+> sg-datasense-browser-alpha@0.4.0-alpha.1 validate
+> npm run typecheck && npm test
+
+
+> sg-datasense-browser-alpha@0.4.0-alpha.1 typecheck
+> tsc --noEmit -p tsconfig.json
+
+
+> sg-datasense-browser-alpha@0.4.0-alpha.1 test
+> npm run build && node --test tests/*.test.mjs
+
+
+> sg-datasense-browser-alpha@0.4.0-alpha.1 build
+> tsc -p tsconfig.json
+
+✔ DS-T017: quoted thousands separator remains invalid numeric input (1.6085ms)
+✔ DS-T018: UTF-8 BOM + non-ASCII content remains intact (0.2394ms)
+✔ DS-T019: RFC-style quoted commas, quotes and multiline fields (0.1513ms)
+✔ DS-T020: case-insensitive duplicate header labels retain unique IDs (0.1487ms)
+✔ DS-T021: malformed quotes reject with actionable errors (0.4051ms)
+✔ DS-T022: header-only CSV yields zero observations (0.2474ms)
+✔ DS-T023: do not auto-convert nonnumeric columns (0.1786ms)
+✔ DS-T024: file size guard applies before decode and on text API (0.1696ms)
+✔ DS-T025: 50,001 data rows are rejected, 50k accepted (16.2151ms)
+✔ DS-T039: only missing values return no eligible numeric column (0.3247ms)
+✔ strict UTF-8 decoder rejects corrupt bytes and empty/headerless content (0.6062ms)
+✔ row shapes; blank internal row is retained, trailing newline is not data (0.1361ms)
+✔ quotes and delimiters cannot execute code; user data remains inert strings (0.2235ms)
+✔ DS-T043/044: numeric and frequency results do not depend on preview (0.4626ms)
+✔ NumPy reference basic_1_4 (1.2861ms)
+✔ NumPy reference singleton (0.2197ms)
+✔ NumPy reference constant (0.2188ms)
+✔ NumPy reference unimodal (0.1349ms)
+✔ NumPy reference multimodal (0.1731ms)
+✔ NumPy reference distinct (0.0953ms)
+✔ NumPy reference negative (0.0821ms)
+✔ NumPy reference zeros (0.1312ms)
+✔ NumPy reference ties (0.1077ms)
+✔ NumPy reference large_offset (0.2668ms)
+✔ NumPy reference large_neg_offset (0.1171ms)
+✔ NumPy reference unbalanced (0.1943ms)
+✔ NumPy reference noninteger (0.1065ms)
+✔ NumPy reference symmetric (0.1407ms)
+✔ NumPy reference zero_singleton (0.063ms)
+✔ NumPy reference extremal_mix (0.0583ms)
+✔ NumPy reference empty (0.0873ms)
+✔ DS-T001-004: basic reference values (0.1675ms)
+✔ DS-T005-007: singleton empty constant (0.8402ms)
+✔ DS-T008-010: multimode and no informative mode (0.1072ms)
+✔ DS-T011-016: numeric validation, exclusions, zeros, scientific, nonfinite (0.3757ms)
+✔ DS-T026-027: bin totals, endpoints and relative frequency (0.3184ms)
+✔ DS-T028-029: ogive and constant histogram geometry (0.1528ms)
+✔ DS-T030: outlier flagging, observed whiskers (0.0702ms)
+✔ DS-T031: stable large offsets (0.0593ms)
+✔ DS-T039-042: missing, ties, reorder and endpoints (0.378ms)
+✔ DS-T043-044: regrouping does not affect statistics; runs deterministic (0.2798ms)
+✔ property: 200 deterministic datasets preserve exact frequency membership (8.7223ms)
+✔ performance smoke: 50,000 values analyze without argument exhaustion (14.2717ms)
+✔ DS-T035 CSV escaping quoted fields and the dangerous spreadsheet formula prefixes (1.1038ms)
+✔ DS-T036 export filenames remove paths/control characters (0.2166ms)
+✔ DS-T032 summary CSV roundtrip and reproducibility metadata (0.7584ms)
+✔ DS-T032 frequency and cumulative CSV roundtrip reconcile (0.2703ms)
+✔ DS-T032 exported box summary matches source quartiles and outlier count (0.1559ms)
+✔ DS-T034 deterministic JSON manifest traceable to computation (0.3127ms)
+✔ DS-T034 inconsistent reports fail closed (0.222ms)
+✔ DS-T032 empty numeric and singleton outcomes reimport (0.6965ms)
+✔ DS-T035 malicious CSV column labels stay spreadsheet-inert in reports (0.278ms)
+✔ DS-T034 ogive and boxplot invariants for all-equal data (0.3006ms)
+✔ DS-13 staging publishes only reviewed static assets and referenced policy documents (284.8868ms)
+✔ DS-13 staging manifest identifies the release and hashes exact shipped bytes reproducibly (467.5341ms)
+✔ DS-13 staging rejects missing build assets before replacing an existing site (228.5655ms)
+✔ DS-13 staging refuses a symlinked output directory without modifying its target (229.3235ms)
+✔ DS-13 staging rejects symlinked assets instead of publishing files outside the allowlist (230.2242ms)
+✔ DS-13 staging rejects a symlinked parent of an otherwise allowed document (235.7467ms)
+✔ DS-13 staging preserves the previous site when the browser entry is missing (233.3962ms)
+✔ DS-13 staging preserves the previous site when a transitive export is missing (231.9348ms)
+✔ DS-13 staging preserves the previous site for missing dynamic import (234.245ms)
+✔ DS-13 staging preserves the previous site for bare module dependency (237.1031ms)
+✔ DS-13 staging preserves the previous site for external module dependency (238.8068ms)
+✔ DS-13 staging preserves the previous site for module outside the artifact (232.5762ms)
+✔ DS-13 staging preserves the previous site for computed dynamic dependency (235.1209ms)
+✔ DS-13 staging preserves the previous site for malformed module syntax (236.7513ms)
+✔ DS-13 staging accepts complete static and literal-dynamic module graphs (241.03ms)
+ℹ tests 68
+ℹ suites 0
+ℹ pass 68
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 3933.9247

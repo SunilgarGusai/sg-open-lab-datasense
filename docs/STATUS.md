@@ -1,11 +1,12 @@
-# DataSense Development Status — 19 October 2026
+# DataSense Development Status — 20 October 2026
 
-- **Current alpha:** `0.4.0-alpha.1` (DS-12 local review).
-- **Locally implemented:** numerical engine, strict CSV import, one-column analysis, histogram/ogive/box plot, eight exports, accessible table captions, error recovery and a keyboard skip link.
-- **Tests:** TypeScript build/typecheck PASS, 53/53 Node tests PASS, 17/17 NumPy oracle PASS, three in-memory Chromium viewport checks PASS.
-- **Performance:** 50,000-row × 8-column synthetic dataset analyzed without errors in Node and mobile-size in-memory Chromium; not a production benchmark or device SLA.
-- **Open release gates:** npm integrity lockfile + GitHub Actions, real hosted/localhost browser verification (CSP/network/secure SHA-256/downloads), assistive-technology/WCAG review, legal/branding/licence review, independent pilot.
-- **GitHub status:** no new DataSense repo published or modified.
-- **Decision:** Internal alpha passes; **public beta NO-GO**.
+- **Current alpha:** `0.4.0-alpha.1`. DS-13 repository, locked CI and guarded staging infrastructure are implemented. **Public beta remains NO-GO.**
+- **Private source repository:** [SunilgarGusai/sg-open-lab-datasense](https://github.com/SunilgarGusai/sg-open-lab-datasense). Existing research repositories were not used as the destination.
+- **Verified local commit:** `d55f5abb661f8945bad0e1c9d5cbb75b719b4d8d`. A clean checkout passes typecheck/build and **68/68 tests**, including the unchanged original 53 tests. All **10 protected baseline file hashes** match; the **17-case independent NumPy oracle** is preserved and passes.
+- **Dependency and staging evidence:** npm registry signatures verified for both dependencies; the recorded audit reports no vulnerabilities. Exact-version npm and hashed Python dependency locks are in place. Two independent local builds produced the same complete manifest for a **19-file** staging site. These results are bounded to the recorded versions and local environment.
+- **Local browser evidence:** Ordinary loopback HTTP loaded a built-in sample with the original CSP retained and produced a JSON download with the expected source SHA-256. This was one manual in-app-browser scenario, not a complete HTTPS/browser/privacy audit.
+- **Hosted CI remains failed:** [First run 39315051604](https://github.com/SunilgarGusai/sg-open-lab-datasense/actions/runs/39315051604) exposed narrow-view keyboard access problems and a Playwright 1.64.0/WebKit 27.2 native-select CSP issue. The corrective commit adds named focusable table regions and keyboard-scroll coverage, strengthens staging-module checks, and pins Playwright to 1.63.0 without relaxing CSP/console checks. In [second run 39316039072](https://github.com/SunilgarGusai/sg-open-lab-datasense/actions/runs/39316039072), installation/signatures/build/68 tests/oracle/package passed, and Chromium and Firefox each passed all six scenarios. WebKit 26.6 still failed the console-error gate in all six. **Raw-artifact diagnosis is pending; the pin is not a demonstrated resolution, and deployment remains blocked.** Latest WebKit and real Safari remain release gates.
+- **Pages status:** Not deployed. The current private-repository plan does not support Pages; the manual workflow's `DATASENSE_PAGES_ENABLED` gate remains off. No public staging URL or public beta is claimed.
+- **Open gates:** Corrected hosted CI; approved real HTTPS staging and headers/CSP/network/storage/all-download verification; the three scoped CSV findings in [the source review](SECURITY_REVIEW_DS13.md); manual WCAG/screen-reader testing; spreadsheet-application export testing; worst-case 100-column workload on slower devices; ownership/licensing/branding clearance; independent pilot; explicit publication decision.
 
-See [full DS-12 audit](RELEASE_READINESS_DS12.md) and [manual checklist](MANUAL_ACCEPTANCE_CHECKLIST.md).
+See the [DS-13 release-readiness record](RELEASE_READINESS_DS13.md) for evidence, limitations and exact next gates. The [DS-12 audit](RELEASE_READINESS_DS12.md) remains historical; use the [manual checklist](MANUAL_ACCEPTANCE_CHECKLIST.md) for the outstanding human checks.

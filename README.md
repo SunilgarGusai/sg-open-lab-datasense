@@ -6,23 +6,27 @@ DataSense aims to make introductory descriptive statistics accessible, transpare
 
 ## Test on a normal laptop
 
-Requires Node 22+ and Python 3. Included compiled JavaScript under `dist/` allows use without npm installation.
+Requires Node 22+ and Python 3. The continuation ZIP includes compiled JavaScript under `dist/` for use without dependency installation. A Git checkout requires the developer build below first.
 
 ```bash
-npm run test:precompiled
-python -m http.server 8000
+node --test tests/numeric.test.mjs tests/csv.test.mjs tests/reports.test.mjs
+python -m http.server 8000 --bind 127.0.0.1
 ```
 
 Visit **http://localhost:8000/** (not `file://`). Select **Sample scores** for a complete demonstration. For your data, open a UTF-8 `.csv` with one nonblank header row. Dataset limits: 5 MiB, 50,000 data rows, 100 columns.
 
-For developers with TypeScript 5.8.3 available:
+For developers, use Node 24.19.0 and Python 3.12 (CI pins 3.12.15; the NumPy tools require Python 3.11 or newer), then install the exact locked tools and build:
 
 ```bash
+npm ci --ignore-scripts
 npm run validate
+node scripts/verify-baseline.mjs
+python -m pip install --require-hashes -r requirements-ci.txt
 npm run test:oracle
+node scripts/stage-site.mjs
 ```
 
-If downloading compiler dependencies, confirm an official lockfile first. The original environment could not access the npm registry; GitHub-hosted CI remains unverified.
+DS-13 supplies a registry-generated lockfile for TypeScript 5.8.3 and axe-core 4.14.0, hashed Python tooling and pinned GitHub Actions. A clean checkout reproduces the staged site file hashes. The current hosted outcomes and limitations are recorded in [DS-13 evidence](docs/RELEASE_READINESS_DS13.md).
 
 ## Mathematical definitions
 
@@ -41,12 +45,13 @@ Summary CSV, grouped-frequency CSV, ogive CSV, boxplot CSV, JSON reproducibility
 
 ## Validation evidence
 
-- **53/53 automated tests passed**; 10 new export-specific tests added to the previous 43.
-- Desktop and 390px/320px mobile-size Chromium interaction tests pass in an **in-memory asset-inlined harness**, covering keyboard navigation, accessibility labels, all eight downloads, text-only HTML rendering and malformed-import recovery.
-- Real local HTTP browser navigation was blocked by the build environment's administrator, so production-origin HTTPS/CSP/download verification has not been conducted. A complete browser/accessibility/privacy audit is still required.
-- The 17-case independent NumPy reference oracle was rerun and passed. A 50,000-row, eight-column performance probe also passed locally; timings are environment-dependent.
+- **68/68 automated Node tests pass**, including all 53 original numerical/import/export tests and 15 staging tests. Ten protected baseline files retain their original SHA-256 hashes.
+- The **17-case independent NumPy oracle passes**. Dependency audit reports zero known vulnerabilities at validation time; both installed packages have verified registry signatures. This does not establish absence of vulnerabilities.
+- The new browser runner uses actual HTTP responses, unchanged CSP, downloaded files, three viewport sizes and both root/project subpaths. It checks keyboard table scrolling, axe accessibility, hostile text, malformed-import recovery, SHA-256, network and storage observations. See the linked report for per-engine outcomes and unresolved failures.
+- Narrow viewport tests are desktop-engine resize checks, not real mobile-device or assistive-technology certification. Public HTTPS staging and manual accessibility checks remain release gates.
+- A 50,000-row, eight-column performance probe passes locally; timings are environment-dependent and do not cover the maximum 100-column workload.
 
-Read the [DS-12 release-readiness audit](docs/RELEASE_READINESS_DS12.md), [manual release checklist](docs/MANUAL_ACCEPTANCE_CHECKLIST.md), historical [DS-09/11 validation report](docs/VALIDATION_DS03.md) and [status](docs/STATUS.md).
+Read the [DS-13 release-readiness audit](docs/RELEASE_READINESS_DS13.md), [DS-13 source security review](docs/SECURITY_REVIEW_DS13.md), [manual release checklist](docs/MANUAL_ACCEPTANCE_CHECKLIST.md) and [status](docs/STATUS.md). The [DS-12 audit](docs/RELEASE_READINESS_DS12.md) and [DS-09/11 validation report](docs/VALIDATION_DS03.md) are historical records.
 
 ## Project architecture
 
@@ -68,8 +73,17 @@ docs/                 method specifications, export policy, validation reports
 
 ## Public-release status
 
-No GitHub repository has been created or modified for this implementation. **Public beta is explicitly NO-GO** until dependency integrity, real-origin tests, WCAG/manual accessibility, ownership/licensing and pilot testing pass. This alpha is not a public beta, not a certified privacy-sensitive data platform, and not yet appropriate for a LinkedIn launch. Release requires hosted-CI verification, browser/network/accessibility testing, user piloting and ownership/licensing checks.
+A dedicated **private** [DataSense repository](https://github.com/SunilgarGusai/sg-open-lab-datasense) now contains CI and a manual, disabled-by-default Pages staging workflow. Existing research repositories were not changed. Pages settings currently require an eligible paid plan or a visibility change; no plan or visibility change was made and no site was deployed. `robots.txt`/`noindex` are indexing preferences, not access control.
 
-For scripted local browser verification, run `python scripts/release_smoke.py` (requires Playwright plus Chromium); performance probes are `node scripts/performance_probe.mjs` and `python scripts/browser_load_probe.py`. These do not replace real-origin testing.
+**Public beta remains NO-GO.** Browser compatibility, actual HTTPS deployment, manual WCAG/assistive-technology review, CSV edge-case hardening, ownership/licensing and an independent pilot remain open. No licence or public-release approval is implied by this package.
+
+For real-origin checks after installing the hashed Python requirements and building `_site`:
+
+```bash
+python -m playwright install --with-deps chromium firefox webkit
+python scripts/real_origin_smoke.py --browser chromium --site-root _site --output evidence/local-chromium
+```
+
+Repeat with `firefox` and `webkit` and a new output directory for each run. Existing evidence is not overwritten. A future approved HTTPS staging URL can be tested using `--url`. The old `release_smoke.py` and `browser_load_probe.py` are historical in-memory checks; `performance_probe.mjs` is a bounded Node performance probe.
 
 See [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md) for participation and security notes.
