@@ -1,0 +1,238 @@
+
+> sg-datasense-browser-alpha@0.4.0-alpha.1 validate
+> npm run typecheck && npm test
+
+
+> sg-datasense-browser-alpha@0.4.0-alpha.1 typecheck
+> tsc --noEmit -p tsconfig.json
+
+
+> sg-datasense-browser-alpha@0.4.0-alpha.1 test
+> npm run build && node --test tests/*.test.mjs
+
+
+> sg-datasense-browser-alpha@0.4.0-alpha.1 build
+> tsc -p tsconfig.json
+
+✔ DS-T017: quoted thousands separator remains invalid numeric input (2.9128ms)
+✔ DS-T018: UTF-8 BOM + non-ASCII content remains intact (0.3986ms)
+✔ DS-T019: RFC-style quoted commas, quotes and multiline fields (0.2474ms)
+✔ DS-T020: case-insensitive duplicate header labels retain unique IDs (0.3342ms)
+✔ DS-T021: malformed quotes reject with actionable errors (0.7375ms)
+✔ DS-T022: header-only CSV yields zero observations (0.4492ms)
+✔ DS-T023: do not auto-convert nonnumeric columns (0.3221ms)
+✔ DS-T024: file size guard applies before decode and on text API (0.2833ms)
+✔ DS-T025: 50,001 data rows are rejected, 50k accepted (37.9664ms)
+✔ DS-T039: only missing values return no eligible numeric column (1.1976ms)
+✔ strict UTF-8 decoder rejects corrupt bytes and empty/headerless content (1.5102ms)
+✔ row shapes; blank internal row is retained, trailing newline is not data (0.6012ms)
+✔ quotes and delimiters cannot execute code; user data remains inert strings (0.6537ms)
+✔ DS-T043/044: numeric and frequency results do not depend on preview (1.7162ms)
+✔ NumPy reference basic_1_4 (3.3067ms)
+✔ NumPy reference singleton (0.3359ms)
+✔ NumPy reference constant (0.2753ms)
+✔ NumPy reference unimodal (0.2514ms)
+✔ NumPy reference multimodal (0.2915ms)
+✔ NumPy reference distinct (0.1819ms)
+✔ NumPy reference negative (0.1579ms)
+✔ NumPy reference zeros (0.18ms)
+✔ NumPy reference ties (0.1945ms)
+✔ NumPy reference large_offset (0.4556ms)
+✔ NumPy reference large_neg_offset (0.5714ms)
+✔ NumPy reference unbalanced (0.2174ms)
+✔ NumPy reference noninteger (0.0937ms)
+✔ NumPy reference symmetric (0.1785ms)
+✔ NumPy reference zero_singleton (0.1199ms)
+✔ NumPy reference extremal_mix (0.1522ms)
+✔ NumPy reference empty (0.2103ms)
+✔ DS-T001-004: basic reference values (0.3634ms)
+✔ DS-T005-007: singleton empty constant (1.953ms)
+✔ DS-T008-010: multimode and no informative mode (0.3279ms)
+✔ DS-T011-016: numeric validation, exclusions, zeros, scientific, nonfinite (0.9095ms)
+✔ DS-T026-027: bin totals, endpoints and relative frequency (0.8968ms)
+✔ DS-T028-029: ogive and constant histogram geometry (0.5092ms)
+✔ DS-T030: outlier flagging, observed whiskers (0.2223ms)
+✔ DS-T031: stable large offsets (0.1946ms)
+✔ DS-T039-042: missing, ties, reorder and endpoints (1.0354ms)
+✔ DS-T043-044: regrouping does not affect statistics; runs deterministic (0.7127ms)
+✔ property: 200 deterministic datasets preserve exact frequency membership (19.4481ms)
+✔ performance smoke: 50,000 values analyze without argument exhaustion (33.7749ms)
+✔ DS-T035 CSV escaping quoted fields and the dangerous spreadsheet formula prefixes (2.0861ms)
+✔ DS-T036 export filenames remove paths/control characters (0.5612ms)
+✔ DS-T032 summary CSV roundtrip and reproducibility metadata (1.6652ms)
+✔ DS-T032 frequency and cumulative CSV roundtrip reconcile (0.5905ms)
+✔ DS-T032 exported box summary matches source quartiles and outlier count (0.4851ms)
+✔ DS-T034 deterministic JSON manifest traceable to computation (1.0843ms)
+✔ DS-T034 inconsistent reports fail closed (0.8467ms)
+✔ DS-T032 empty numeric and singleton outcomes reimport (4.8014ms)
+✔ DS-T035 malicious CSV column labels stay spreadsheet-inert in reports (0.5849ms)
+✔ DS-T034 ogive and boxplot invariants for all-equal data (0.5322ms)
+✖ DS-13 staging publishes only reviewed static assets and referenced policy documents (162.9168ms)
+✖ DS-13 staging manifest identifies the release and hashes exact shipped bytes reproducibly (117.3926ms)
+✖ DS-13 staging rejects missing build assets before replacing an existing site (121.5524ms)
+✖ DS-13 staging refuses a symlinked output directory without modifying its target (127.9784ms)
+✖ DS-13 staging rejects symlinked assets instead of publishing files outside the allowlist (99.6095ms)
+ℹ tests 58
+ℹ suites 0
+ℹ pass 53
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 802.145
+
+✖ failing tests:
+
+test at tests\staging.test.mjs:61:1
+✖ DS-13 staging publishes only reviewed static assets and referenced policy documents (162.9168ms)
+  AssertionError [ERR_ASSERTION]: node:internal/modules/cjs/loader:1520
+    throw err;
+    ^
+  
+  Error: Cannot find module 'C:\Users\sunil\.codex\.chatgpt-projects\g-p-680991721c648191a479b89134a0790d\work\sg-open-lab-datasense\scripts\stage-site.mjs'
+      at Module._resolveFilename (node:internal/modules/cjs/loader:1517:15)
+      at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)
+      at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)
+      at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1122:12)
+      at Module._load (node:internal/modules/cjs/loader:1294:5)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)
+      at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)
+      at node:internal/main/run_main_module:33:47 {
+    code: 'MODULE_NOT_FOUND',
+    requireStack: []
+  }
+  
+  Node.js v24.19.0
+  
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/staging.test.mjs:64:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\staging.test.mjs:78:1
+✖ DS-13 staging manifest identifies the release and hashes exact shipped bytes reproducibly (117.3926ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  1 !== 0
+  
+      at TestContext.<anonymous> (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/staging.test.mjs:80:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 1,
+    expected: 0,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\staging.test.mjs:98:1
+✖ DS-13 staging rejects missing build assets before replacing an existing site (121.5524ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Missing required directory: dist/. Input:
+  
+  'node:internal/modules/cjs/loader:1520\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\sunil\\.codex\\.chatgpt-projects\\g-p-680991721c648191a479b89134a0790d\\work\\sg-open-lab-datasense\\scripts\\stage-site.mjs'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1517:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1122:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1294:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.19.0\r\n'
+  
+      at TestContext.<anonymous> (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/staging.test.mjs:105:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1520\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\sunil\\.codex\\.chatgpt-projects\\g-p-680991721c648191a479b89134a0790d\\work\\sg-open-lab-datasense\\scripts\\stage-site.mjs'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1517:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1122:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1294:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.19.0\r\n",
+    expected: /Missing required directory: dist/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\staging.test.mjs:109:1
+✖ DS-13 staging refuses a symlinked output directory without modifying its target (127.9784ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Refusing symlinked staging output/. Input:
+  
+  'node:internal/modules/cjs/loader:1520\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\sunil\\.codex\\.chatgpt-projects\\g-p-680991721c648191a479b89134a0790d\\work\\sg-open-lab-datasense\\scripts\\stage-site.mjs'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1517:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1122:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1294:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.19.0\r\n'
+  
+      at TestContext.<anonymous> (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/staging.test.mjs:121:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1520\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\sunil\\.codex\\.chatgpt-projects\\g-p-680991721c648191a479b89134a0790d\\work\\sg-open-lab-datasense\\scripts\\stage-site.mjs'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1517:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1122:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1294:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.19.0\r\n",
+    expected: /Refusing symlinked staging output/,
+    operator: 'match',
+    diff: 'simple'
+  }
+
+test at tests\staging.test.mjs:125:1
+✖ DS-13 staging rejects symlinked assets instead of publishing files outside the allowlist (99.6095ms)
+  AssertionError [ERR_ASSERTION]: The input did not match the regular expression /Symbolic links are not publishable/. Input:
+  
+  'node:internal/modules/cjs/loader:1520\r\n' +
+    '  throw err;\r\n' +
+    '  ^\r\n' +
+    '\r\n' +
+    "Error: Cannot find module 'C:\\Users\\sunil\\.codex\\.chatgpt-projects\\g-p-680991721c648191a479b89134a0790d\\work\\sg-open-lab-datasense\\scripts\\stage-site.mjs'\r\n" +
+    '    at Module._resolveFilename (node:internal/modules/cjs/loader:1517:15)\r\n' +
+    '    at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)\r\n' +
+    '    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)\r\n' +
+    '    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1122:12)\r\n' +
+    '    at Module._load (node:internal/modules/cjs/loader:1294:5)\r\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\r\n' +
+    '    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n' +
+    '    at node:internal/main/run_main_module:33:47 {\r\n' +
+    "  code: 'MODULE_NOT_FOUND',\r\n" +
+    '  requireStack: []\r\n' +
+    '}\r\n' +
+    '\r\n' +
+    'Node.js v24.19.0\r\n'
+  
+      at TestContext.<anonymous> (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/staging.test.mjs:137:10)
+      at async Test.run (node:internal/test_runner/test:1389:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: "node:internal/modules/cjs/loader:1520\r\n  throw err;\r\n  ^\r\n\r\nError: Cannot find module 'C:\\Users\\sunil\\.codex\\.chatgpt-projects\\g-p-680991721c648191a479b89134a0790d\\work\\sg-open-lab-datasense\\scripts\\stage-site.mjs'\r\n    at Module._resolveFilename (node:internal/modules/cjs/loader:1517:15)\r\n    at wrapResolveFilename (node:internal/modules/cjs/loader:1071:27)\r\n    at defaultResolveImplForCJSLoading (node:internal/modules/cjs/loader:1095:10)\r\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1122:12)\r\n    at Module._load (node:internal/modules/cjs/loader:1294:5)\r\n    at wrapModuleLoad (node:internal/modules/cjs/loader:255:19)\r\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:154:5)\r\n    at node:internal/main/run_main_module:33:47 {\r\n  code: 'MODULE_NOT_FOUND',\r\n  requireStack: []\r\n}\r\n\r\nNode.js v24.19.0\r\n",
+    expected: /Symbolic links are not publishable/,
+    operator: 'match',
+    diff: 'simple'
+  }

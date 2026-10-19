@@ -1,26 +1,73 @@
-name: Foundation validation
+name: Alpha validation
 on:
   push:
   pull_request:
 permissions:
   contents: read
+concurrency:
+  group: alpha-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
-  node-core:
-    runs-on: ubuntu-latest
+  validate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
         with:
-          node-version: '22'
-      # Temporary npm install: lockfile must be generated when registry access is available.
-      - run: npm install --ignore-scripts --no-audit --no-fund
-      - run: npm run validate
-  python-oracle:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
         with:
-          python-version: '3.12'
-      - run: python -m pip install 'numpy==2.3.5'
-      - run: python scripts/generate_numpy_oracle.py --verify
+          node-version: '24.19.0'
+          cache: npm
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12.15'
+      - name: Record toolchain and install locked JavaScript dependencies
+        run: |
+          mkdir -p evidence/ci
+          node --version | tee evidence/ci/node-version.txt
+          npm --version | tee evidence/ci/npm-version.txt
+          python --version | tee evidence/ci/python-version.txt
+          npm ci --ignore-scripts --no-fund 2>&1 | tee evidence/ci/npm-ci.log
+      - name: Verify protected mathematical baseline
+        run: node scripts/verify-baseline.mjs 2>&1 | tee evidence/ci/baseline-verification.log
+      - name: Audit dependency vulnerabilities and registry signatures
+        run: |
+          npm audit --audit-level=high 2>&1 | tee evidence/ci/npm-audit.log
+          npm audit signatures 2>&1 | tee evidence/ci/npm-signatures.log
+      - name: Typecheck, compile and test
+        run: npm run validate 2>&1 | tee evidence/ci/node-validation.log
+      - name: Install pinned oracle and browser tools
+        run: python -m pip install --disable-pip-version-check --require-hashes -r requirements-ci.txt 2>&1 | tee evidence/ci/python-install.log
+      - name: Verify frozen independent NumPy oracle
+        run: python scripts/generate_numpy_oracle.py --verify 2>&1 | tee evidence/ci/numpy-oracle.log
+      - name: Package minimal alpha site
+        run: node scripts/stage-site.mjs 2>&1 | tee evidence/ci/site-package.log
+      - name: Install browser engines
+        run: python -m playwright install --with-deps chromium firefox webkit
+      - name: Exercise packaged site at real local HTTP origins and project paths
+        run: |
+          browser_failures=0
+          for browser in chromium firefox webkit; do
+            mkdir -p "evidence/browser-${browser}"
+            python scripts/real_origin_smoke.py --browser "$browser" --site-root _site --axe node_modules/axe-core/axe.min.js --output "evidence/browser-${browser}" 2>&1 | tee "evidence/browser-${browser}/run.log" || browser_failures=1
+          done
+          exit "$browser_failures"
+      - name: Preserve validation evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alpha-validation-evidence-${{ github.sha }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Preserve validated minimal site
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: alpha-staging-site-${{ github.sha }}
+          path: _site/
+          if-no-files-found: error
+          retention-days: 14

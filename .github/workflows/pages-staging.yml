@@ -1,0 +1,98 @@
+name: Guarded alpha Pages staging
+
+# Preparing this workflow does not enable Pages. A maintainer may enable the
+# repository variable only after visibility, licensing and release gates clear.
+# Private source repositories can publish publicly readable Pages sites.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages-staging
+  cancel-in-progress: false
+
+jobs:
+  validate-and-package:
+    if: ${{ vars.DATASENSE_PAGES_ENABLED == 'true' && github.ref == 'refs/heads/main' && github.repository == 'SunilgarGusai/sg-open-lab-datasense' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.19.0'
+          cache: npm
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12.15'
+      - name: Record toolchain and install locked JavaScript dependencies
+        run: |
+          mkdir -p evidence/ci
+          node --version | tee evidence/ci/node-version.txt
+          npm --version | tee evidence/ci/npm-version.txt
+          python --version | tee evidence/ci/python-version.txt
+          npm ci --ignore-scripts --no-fund 2>&1 | tee evidence/ci/npm-ci.log
+      - name: Verify protected mathematical baseline
+        run: node scripts/verify-baseline.mjs 2>&1 | tee evidence/ci/baseline-verification.log
+      - name: Audit dependency vulnerabilities and registry signatures
+        run: |
+          npm audit --audit-level=high 2>&1 | tee evidence/ci/npm-audit.log
+          npm audit signatures 2>&1 | tee evidence/ci/npm-signatures.log
+      - name: Typecheck, compile and test
+        run: npm run validate 2>&1 | tee evidence/ci/node-validation.log
+      - name: Install pinned oracle and browser tools
+        run: python -m pip install --disable-pip-version-check --require-hashes -r requirements-ci.txt 2>&1 | tee evidence/ci/python-install.log
+      - name: Verify frozen independent NumPy oracle
+        run: python scripts/generate_numpy_oracle.py --verify 2>&1 | tee evidence/ci/numpy-oracle.log
+      - name: Package minimal alpha site
+        run: node scripts/stage-site.mjs 2>&1 | tee evidence/ci/site-package.log
+      - name: Install browser engines
+        run: python -m playwright install --with-deps chromium firefox webkit
+      - name: Validate the exact artifact before upload
+        run: |
+          browser_failures=0
+          for browser in chromium firefox webkit; do
+            mkdir -p "evidence/browser-${browser}"
+            python scripts/real_origin_smoke.py --browser "$browser" --site-root _site --axe node_modules/axe-core/axe.min.js --output "evidence/browser-${browser}" 2>&1 | tee "evidence/browser-${browser}/run.log" || browser_failures=1
+          done
+          exit "$browser_failures"
+      - name: Preserve staging validation evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        with:
+          name: pages-staging-evidence-${{ github.sha }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 14
+      - name: Upload only the tested static artifact
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4
+        with:
+          path: _site/
+          retention-days: 14
+
+  deploy:
+    needs: validate-and-package
+    if: ${{ vars.DATASENSE_PAGES_ENABLED == 'true' && github.ref == 'refs/heads/main' && github.repository == 'SunilgarGusai/sg-open-lab-datasense' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Read existing Pages configuration without enabling it
+        uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
+        with:
+          enablement: false
+      - name: Deploy the same validated artifact
+        id: deployment
+        uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4

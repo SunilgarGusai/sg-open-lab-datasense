@@ -1,0 +1,18 @@
+{
+  "version": "0.4.0-alpha.1",
+  "scenario": "50,000 rows × 8 numeric columns",
+  "bytes": 2276064,
+  "rows": 50000,
+  "columns": 8,
+  "stages_ms": {
+    "generate_ms": 116.43,
+    "parse_ms": 53.19,
+    "profile_all_columns_ms": 74.28,
+    "select_ms": 8.08,
+    "summary_ms": 29.09,
+    "group_ms": 4.05,
+    "ogive_boxplot_ms": 11.67
+  },
+  "remaining_heap_mb": 43.3,
+  "caveat": "Node local baseline only; browser UI main-thread responsiveness not established"
+}

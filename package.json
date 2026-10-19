@@ -18,6 +18,7 @@
     "test:csv": "npm run build && node --test tests/csv.test.mjs"
   },
   "devDependencies": {
+    "axe-core": "4.14.0",
     "typescript": "5.8.3"
   }
 }
