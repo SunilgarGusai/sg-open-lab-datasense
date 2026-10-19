@@ -1,0 +1,9 @@
+{
+  "commit": "1f4ca2d9c04e8222868c49fc316bcbfeaae90873",
+  "run_id": "39317569040",
+  "file_count": 19,
+  "result": "PASS",
+  "scope": "Every byte of the local Windows staging artifact equals the independently built Ubuntu hosted-CI artifact, including staging-manifest.json",
+  "site_artifact_sha256": "18d52df4bd0b4047008f13dbc0d3e0de5328eee296bd69d60503d04e95759d14",
+  "manifest_sha256": "dc667b276ae3da866de0553ca8e0986f5bbc0306e87247f404195d75df755a77"
+}

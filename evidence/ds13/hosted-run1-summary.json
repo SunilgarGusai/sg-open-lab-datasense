@@ -1,0 +1,476 @@
+{
+  "run_id": "39315051604",
+  "commit": "30321a383537ac486e3ff05994876fb1c3008b4d",
+  "url": "https://github.com/SunilgarGusai/sg-open-lab-datasense/actions/runs/39315051604",
+  "artifact_sha256": "e5fa16e30868fed6aeecd7df1a44cec56caa65f8654f54777a211343e1f7987f",
+  "artifact_digest_verified": true,
+  "browsers": [
+    {
+      "browser": "chromium",
+      "version": "156.0.8078.4",
+      "playwright_version": "1.64.0",
+      "status": "fail",
+      "scenarios": 6,
+      "passed_scenarios": 2,
+      "checks": 102,
+      "failed_checks": [
+        {
+          "name": "axe-numeric-serious-critical-gate",
+          "status": "fail",
+          "error": "Serious/critical axe violations; inspect {'file': 'axe-numeric.json', 'version': '4.14.0', 'violations': 1, 'incomplete': 1, 'blocking': [{'id': 'scrollable-region-focusable', 'impact': 'serious', 'nodes': 2}]}",
+          "error_type": "AssertionError",
+          "duration_ms": 599
+        },
+        {
+          "name": "axe-numeric-serious-critical-gate",
+          "status": "fail",
+          "error": "Serious/critical axe violations; inspect {'file': 'axe-numeric.json', 'version': '4.14.0', 'violations': 1, 'incomplete': 1, 'blocking': [{'id': 'scrollable-region-focusable', 'impact': 'serious', 'nodes': 2}]}",
+          "error_type": "AssertionError",
+          "duration_ms": 642
+        },
+        {
+          "name": "axe-numeric-serious-critical-gate",
+          "status": "fail",
+          "error": "Serious/critical axe violations; inspect {'file': 'axe-numeric.json', 'version': '4.14.0', 'violations': 1, 'incomplete': 1, 'blocking': [{'id': 'scrollable-region-focusable', 'impact': 'serious', 'nodes': 2}]}",
+          "error_type": "AssertionError",
+          "duration_ms": 589
+        },
+        {
+          "name": "axe-numeric-serious-critical-gate",
+          "status": "fail",
+          "error": "Serious/critical axe violations; inspect {'file': 'axe-numeric.json', 'version': '4.14.0', 'violations': 1, 'incomplete': 1, 'blocking': [{'id': 'scrollable-region-focusable', 'impact': 'serious', 'nodes': 2}]}",
+          "error_type": "AssertionError",
+          "duration_ms": 580
+        }
+      ],
+      "screenshots": 36,
+      "screenshots_omitted": false,
+      "source_inventory": {
+        "root": "/home/runner/work/sg-open-lab-datasense/sg-open-lab-datasense/_site",
+        "files": [
+          {
+            "path": "dist/app/browser.js",
+            "bytes": 13771,
+            "sha256": "1d54840c744e62482ff5f026594331e2e7182d3bd2771795124ba0c5d1cb74e3"
+          },
+          {
+            "path": "dist/app/charts.js",
+            "bytes": 6960,
+            "sha256": "a1cc7d5564971503d2eff355f595f55362984f422f36f99736a2b543d24fbb20"
+          },
+          {
+            "path": "dist/core/boxplot.js",
+            "bytes": 1148,
+            "sha256": "b0052d62ce85fbfa39cf56e926c40ac164babe2fb6eb05f39da810fc2506d488"
+          },
+          {
+            "path": "dist/core/frequency.js",
+            "bytes": 3732,
+            "sha256": "38de9199736b2802f51d4f03c9c8521d306c1faeda634271bc13f1eb5b812512"
+          },
+          {
+            "path": "dist/core/numeric.js",
+            "bytes": 1526,
+            "sha256": "0970af76e0f971c10216e481725d9638c412b73d94212590babde8045b454f06"
+          },
+          {
+            "path": "dist/core/quantiles.js",
+            "bytes": 1650,
+            "sha256": "cfeca5796494f1b9991bfce0f65e072a5e82f740800cb9e8d385292906cea86d"
+          },
+          {
+            "path": "dist/core/summary.js",
+            "bytes": 3306,
+            "sha256": "c33d69d0d18a35ee2b4661b2d23a559f2a3d32b0c8a056714caef99735ce567a"
+          },
+          {
+            "path": "dist/domain/types.js",
+            "bytes": 11,
+            "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+          },
+          {
+            "path": "dist/export/report.js",
+            "bytes": 5270,
+            "sha256": "661482f4c12dfefcc82bd7fc173216540d372c5d2ea559b278a06e5bf4c4e331"
+          },
+          {
+            "path": "dist/import/csv.js",
+            "bytes": 5970,
+            "sha256": "6daac1da6c98a2bf44c2dd5ecd2971b6aabf103de8934866e8e17aa34219ee17"
+          },
+          {
+            "path": "dist/index.js",
+            "bytes": 605,
+            "sha256": "26bc83bc2a1d39e272f1bf59e4bdb70c0010c604086855335e0b0ad8750852a5"
+          },
+          {
+            "path": "index.html",
+            "bytes": 6741,
+            "sha256": "5b6b73dfedf629cae88631306f6aa5d5d41017163e4396d9ea59f4909f77b46d"
+          },
+          {
+            "path": "styles.css",
+            "bytes": 5905,
+            "sha256": "7942218327210eeae37c1f0f968b5ca83aaeca9d3ce0184f400c3c2cf3d6a086"
+          }
+        ],
+        "sha256": "88e853d4905c5dea750b4b8d5d7ddfa5977d6345adc7025fb52c7d901a07b3d3",
+        "algorithm": "SHA-256 of sorted relative-path NUL file-SHA256 LF entries"
+      }
+    },
+    {
+      "browser": "firefox",
+      "version": "157.0",
+      "playwright_version": "1.64.0",
+      "status": "fail",
+      "scenarios": 6,
+      "passed_scenarios": 2,
+      "checks": 102,
+      "failed_checks": [
+        {
+          "name": "axe-numeric-serious-critical-gate",
+          "status": "fail",
+          "error": "Serious/critical axe violations; inspect {'file': 'axe-numeric.json', 'version': '4.14.0', 'violations': 1, 'incomplete': 1, 'blocking': [{'id': 'scrollable-region-focusable', 'impact': 'serious', 'nodes': 2}]}",
+          "error_type": "AssertionError",
+          "duration_ms": 767
+        },
+        {
+          "name": "axe-numeric-serious-critical-gate",
+          "status": "fail",
+          "error": "Serious/critical axe violations; inspect {'file': 'axe-numeric.json', 'version': '4.14.0', 'violations': 1, 'incomplete': 1, 'blocking': [{'id': 'scrollable-region-focusable', 'impact': 'serious', 'nodes': 2}]}",
+          "error_type": "AssertionError",
+          "duration_ms": 779
+        },
+        {
+          "name": "axe-numeric-serious-critical-gate",
+          "status": "fail",
+          "error": "Serious/critical axe violations; inspect {'file': 'axe-numeric.json', 'version': '4.14.0', 'violations': 1, 'incomplete': 1, 'blocking': [{'id': 'scrollable-region-focusable', 'impact': 'serious', 'nodes': 2}]}",
+          "error_type": "AssertionError",
+          "duration_ms": 721
+        },
+        {
+          "name": "axe-numeric-serious-critical-gate",
+          "status": "fail",
+          "error": "Serious/critical axe violations; inspect {'file': 'axe-numeric.json', 'version': '4.14.0', 'violations': 1, 'incomplete': 1, 'blocking': [{'id': 'scrollable-region-focusable', 'impact': 'serious', 'nodes': 2}]}",
+          "error_type": "AssertionError",
+          "duration_ms": 799
+        }
+      ],
+      "screenshots": 36,
+      "screenshots_omitted": false,
+      "source_inventory": {
+        "root": "/home/runner/work/sg-open-lab-datasense/sg-open-lab-datasense/_site",
+        "files": [
+          {
+            "path": "dist/app/browser.js",
+            "bytes": 13771,
+            "sha256": "1d54840c744e62482ff5f026594331e2e7182d3bd2771795124ba0c5d1cb74e3"
+          },
+          {
+            "path": "dist/app/charts.js",
+            "bytes": 6960,
+            "sha256": "a1cc7d5564971503d2eff355f595f55362984f422f36f99736a2b543d24fbb20"
+          },
+          {
+            "path": "dist/core/boxplot.js",
+            "bytes": 1148,
+            "sha256": "b0052d62ce85fbfa39cf56e926c40ac164babe2fb6eb05f39da810fc2506d488"
+          },
+          {
+            "path": "dist/core/frequency.js",
+            "bytes": 3732,
+            "sha256": "38de9199736b2802f51d4f03c9c8521d306c1faeda634271bc13f1eb5b812512"
+          },
+          {
+            "path": "dist/core/numeric.js",
+            "bytes": 1526,
+            "sha256": "0970af76e0f971c10216e481725d9638c412b73d94212590babde8045b454f06"
+          },
+          {
+            "path": "dist/core/quantiles.js",
+            "bytes": 1650,
+            "sha256": "cfeca5796494f1b9991bfce0f65e072a5e82f740800cb9e8d385292906cea86d"
+          },
+          {
+            "path": "dist/core/summary.js",
+            "bytes": 3306,
+            "sha256": "c33d69d0d18a35ee2b4661b2d23a559f2a3d32b0c8a056714caef99735ce567a"
+          },
+          {
+            "path": "dist/domain/types.js",
+            "bytes": 11,
+            "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+          },
+          {
+            "path": "dist/export/report.js",
+            "bytes": 5270,
+            "sha256": "661482f4c12dfefcc82bd7fc173216540d372c5d2ea559b278a06e5bf4c4e331"
+          },
+          {
+            "path": "dist/import/csv.js",
+            "bytes": 5970,
+            "sha256": "6daac1da6c98a2bf44c2dd5ecd2971b6aabf103de8934866e8e17aa34219ee17"
+          },
+          {
+            "path": "dist/index.js",
+            "bytes": 605,
+            "sha256": "26bc83bc2a1d39e272f1bf59e4bdb70c0010c604086855335e0b0ad8750852a5"
+          },
+          {
+            "path": "index.html",
+            "bytes": 6741,
+            "sha256": "5b6b73dfedf629cae88631306f6aa5d5d41017163e4396d9ea59f4909f77b46d"
+          },
+          {
+            "path": "styles.css",
+            "bytes": 5905,
+            "sha256": "7942218327210eeae37c1f0f968b5ca83aaeca9d3ce0184f400c3c2cf3d6a086"
+          }
+        ],
+        "sha256": "88e853d4905c5dea750b4b8d5d7ddfa5977d6345adc7025fb52c7d901a07b3d3",
+        "algorithm": "SHA-256 of sorted relative-path NUL file-SHA256 LF entries"
+      }
+    },
+    {
+      "browser": "webkit",
+      "version": "27.2",
+      "playwright_version": "1.64.0",
+      "status": "fail",
+      "scenarios": 6,
+      "passed_scenarios": 0,
+      "checks": 102,
+      "failed_checks": [
+        {
+          "name": "no-unexpected-runtime-console-errors-or-dialogs",
+          "status": "fail",
+          "error": "Page errors=[]; unexpected console errors=[{'phase': 'navigation', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/', 'line': 32, 'column': 0, 'lineNumber': 32, 'columnNumber': 0}}, {'phase': 'navigation', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/', 'line': 34, 'column': 0, 'lineNumber': 34, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}]; dialogs=[]",
+          "error_type": "AssertionError",
+          "duration_ms": 0
+        },
+        {
+          "name": "axe-numeric-serious-critical-gate",
+          "status": "fail",
+          "error": "Serious/critical axe violations; inspect {'file': 'axe-numeric.json', 'version': '4.14.0', 'violations': 1, 'incomplete': 1, 'blocking': [{'id': 'scrollable-region-focusable', 'impact': 'serious', 'nodes': 2}]}",
+          "error_type": "AssertionError",
+          "duration_ms": 716
+        },
+        {
+          "name": "no-unexpected-runtime-console-errors-or-dialogs",
+          "status": "fail",
+          "error": "Page errors=[]; unexpected console errors=[{'phase': 'navigation', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/', 'line': 32, 'column': 0, 'lineNumber': 32, 'columnNumber': 0}}, {'phase': 'navigation', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/', 'line': 34, 'column': 0, 'lineNumber': 34, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}]; dialogs=[]",
+          "error_type": "AssertionError",
+          "duration_ms": 0
+        },
+        {
+          "name": "axe-numeric-serious-critical-gate",
+          "status": "fail",
+          "error": "Serious/critical axe violations; inspect {'file': 'axe-numeric.json', 'version': '4.14.0', 'violations': 1, 'incomplete': 1, 'blocking': [{'id': 'scrollable-region-focusable', 'impact': 'serious', 'nodes': 2}]}",
+          "error_type": "AssertionError",
+          "duration_ms": 727
+        },
+        {
+          "name": "no-unexpected-runtime-console-errors-or-dialogs",
+          "status": "fail",
+          "error": "Page errors=[]; unexpected console errors=[{'phase': 'navigation', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/', 'line': 32, 'column': 0, 'lineNumber': 32, 'columnNumber': 0}}, {'phase': 'navigation', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/', 'line': 34, 'column': 0, 'lineNumber': 34, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}]; dialogs=[]",
+          "error_type": "AssertionError",
+          "duration_ms": 0
+        },
+        {
+          "name": "no-unexpected-runtime-console-errors-or-dialogs",
+          "status": "fail",
+          "error": "Page errors=[]; unexpected console errors=[{'phase': 'navigation', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/', 'line': 32, 'column': 0, 'lineNumber': 32, 'columnNumber': 0}}, {'phase': 'navigation', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/', 'line': 34, 'column': 0, 'lineNumber': 34, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}]; dialogs=[]",
+          "error_type": "AssertionError",
+          "duration_ms": 0
+        },
+        {
+          "name": "axe-numeric-serious-critical-gate",
+          "status": "fail",
+          "error": "Serious/critical axe violations; inspect {'file': 'axe-numeric.json', 'version': '4.14.0', 'violations': 1, 'incomplete': 1, 'blocking': [{'id': 'scrollable-region-focusable', 'impact': 'serious', 'nodes': 2}]}",
+          "error_type": "AssertionError",
+          "duration_ms": 699
+        },
+        {
+          "name": "no-unexpected-runtime-console-errors-or-dialogs",
+          "status": "fail",
+          "error": "Page errors=[]; unexpected console errors=[{'phase': 'navigation', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/', 'line': 32, 'column': 0, 'lineNumber': 32, 'columnNumber': 0}}, {'phase': 'navigation', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/', 'line': 34, 'column': 0, 'lineNumber': 34, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}]; dialogs=[]",
+          "error_type": "AssertionError",
+          "duration_ms": 0
+        },
+        {
+          "name": "axe-numeric-serious-critical-gate",
+          "status": "fail",
+          "error": "Serious/critical axe violations; inspect {'file': 'axe-numeric.json', 'version': '4.14.0', 'violations': 1, 'incomplete': 1, 'blocking': [{'id': 'scrollable-region-focusable', 'impact': 'serious', 'nodes': 2}]}",
+          "error_type": "AssertionError",
+          "duration_ms": 707
+        },
+        {
+          "name": "no-unexpected-runtime-console-errors-or-dialogs",
+          "status": "fail",
+          "error": "Page errors=[]; unexpected console errors=[{'phase': 'navigation', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/', 'line': 32, 'column': 0, 'lineNumber': 32, 'columnNumber': 0}}, {'phase': 'navigation', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/', 'line': 34, 'column': 0, 'lineNumber': 34, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}, {'phase': 'application', 'type': 'error', 'text': \"Refused to apply a stylesheet because its hash, its nonce, or 'unsafe-inline' does not appear in the style-src directive of the Content Security Policy.\", 'location': {'url': 'http://127.0.0.1:39091/sg-open-lab-datasense/#main', 'line': 0, 'column': 0, 'lineNumber': 0, 'columnNumber': 0}}]; dialogs=[]",
+          "error_type": "AssertionError",
+          "duration_ms": 0
+        }
+      ],
+      "screenshots": 36,
+      "screenshots_omitted": false,
+      "source_inventory": {
+        "root": "/home/runner/work/sg-open-lab-datasense/sg-open-lab-datasense/_site",
+        "files": [
+          {
+            "path": "dist/app/browser.js",
+            "bytes": 13771,
+            "sha256": "1d54840c744e62482ff5f026594331e2e7182d3bd2771795124ba0c5d1cb74e3"
+          },
+          {
+            "path": "dist/app/charts.js",
+            "bytes": 6960,
+            "sha256": "a1cc7d5564971503d2eff355f595f55362984f422f36f99736a2b543d24fbb20"
+          },
+          {
+            "path": "dist/core/boxplot.js",
+            "bytes": 1148,
+            "sha256": "b0052d62ce85fbfa39cf56e926c40ac164babe2fb6eb05f39da810fc2506d488"
+          },
+          {
+            "path": "dist/core/frequency.js",
+            "bytes": 3732,
+            "sha256": "38de9199736b2802f51d4f03c9c8521d306c1faeda634271bc13f1eb5b812512"
+          },
+          {
+            "path": "dist/core/numeric.js",
+            "bytes": 1526,
+            "sha256": "0970af76e0f971c10216e481725d9638c412b73d94212590babde8045b454f06"
+          },
+          {
+            "path": "dist/core/quantiles.js",
+            "bytes": 1650,
+            "sha256": "cfeca5796494f1b9991bfce0f65e072a5e82f740800cb9e8d385292906cea86d"
+          },
+          {
+            "path": "dist/core/summary.js",
+            "bytes": 3306,
+            "sha256": "c33d69d0d18a35ee2b4661b2d23a559f2a3d32b0c8a056714caef99735ce567a"
+          },
+          {
+            "path": "dist/domain/types.js",
+            "bytes": 11,
+            "sha256": "8e609bb71c20b858c77f0e9f90bb1319db8477b13f9f965f1a1e18524bf50881"
+          },
+          {
+            "path": "dist/export/report.js",
+            "bytes": 5270,
+            "sha256": "661482f4c12dfefcc82bd7fc173216540d372c5d2ea559b278a06e5bf4c4e331"
+          },
+          {
+            "path": "dist/import/csv.js",
+            "bytes": 5970,
+            "sha256": "6daac1da6c98a2bf44c2dd5ecd2971b6aabf103de8934866e8e17aa34219ee17"
+          },
+          {
+            "path": "dist/index.js",
+            "bytes": 605,
+            "sha256": "26bc83bc2a1d39e272f1bf59e4bdb70c0010c604086855335e0b0ad8750852a5"
+          },
+          {
+            "path": "index.html",
+            "bytes": 6741,
+            "sha256": "5b6b73dfedf629cae88631306f6aa5d5d41017163e4396d9ea59f4909f77b46d"
+          },
+          {
+            "path": "styles.css",
+            "bytes": 5905,
+            "sha256": "7942218327210eeae37c1f0f968b5ca83aaeca9d3ce0184f400c3c2cf3d6a086"
+          }
+        ],
+        "sha256": "88e853d4905c5dea750b4b8d5d7ddfa5977d6345adc7025fb52c7d901a07b3d3",
+        "algorithm": "SHA-256 of sorted relative-path NUL file-SHA256 LF entries"
+      }
+    }
+  ],
+  "saved_exports_verified": 144,
+  "axe_scans": 36,
+  "axe_violations": [
+    {
+      "browser": "chromium",
+      "file": "browser-chromium/project-subpath-320/axe-numeric.json",
+      "id": "scrollable-region-focusable",
+      "impact": "serious"
+    },
+    {
+      "browser": "chromium",
+      "file": "browser-chromium/project-subpath-390/axe-numeric.json",
+      "id": "scrollable-region-focusable",
+      "impact": "serious"
+    },
+    {
+      "browser": "chromium",
+      "file": "browser-chromium/root-320/axe-numeric.json",
+      "id": "scrollable-region-focusable",
+      "impact": "serious"
+    },
+    {
+      "browser": "chromium",
+      "file": "browser-chromium/root-390/axe-numeric.json",
+      "id": "scrollable-region-focusable",
+      "impact": "serious"
+    },
+    {
+      "browser": "firefox",
+      "file": "browser-firefox/project-subpath-320/axe-numeric.json",
+      "id": "scrollable-region-focusable",
+      "impact": "serious"
+    },
+    {
+      "browser": "firefox",
+      "file": "browser-firefox/project-subpath-390/axe-numeric.json",
+      "id": "scrollable-region-focusable",
+      "impact": "serious"
+    },
+    {
+      "browser": "firefox",
+      "file": "browser-firefox/root-320/axe-numeric.json",
+      "id": "scrollable-region-focusable",
+      "impact": "serious"
+    },
+    {
+      "browser": "firefox",
+      "file": "browser-firefox/root-390/axe-numeric.json",
+      "id": "scrollable-region-focusable",
+      "impact": "serious"
+    },
+    {
+      "browser": "webkit",
+      "file": "browser-webkit/project-subpath-320/axe-numeric.json",
+      "id": "scrollable-region-focusable",
+      "impact": "serious"
+    },
+    {
+      "browser": "webkit",
+      "file": "browser-webkit/project-subpath-390/axe-numeric.json",
+      "id": "scrollable-region-focusable",
+      "impact": "serious"
+    },
+    {
+      "browser": "webkit",
+      "file": "browser-webkit/root-320/axe-numeric.json",
+      "id": "scrollable-region-focusable",
+      "impact": "serious"
+    },
+    {
+      "browser": "webkit",
+      "file": "browser-webkit/root-390/axe-numeric.json",
+      "id": "scrollable-region-focusable",
+      "impact": "serious"
+    }
+  ],
+  "axe_incomplete_ids": [
+    "color-contrast"
+  ],
+  "limitations": [
+    "Loopback HTTP in hosted CI, not a deployed HTTPS origin.",
+    "Desktop-engine narrow viewports, not actual mobile devices.",
+    "Automated accessibility checks do not establish WCAG conformance.",
+    "Tool versions are recorded per browser; current WebKit and real Safari are open release gates."
+  ],
+  "overall_browser_status": "fail"
+}
