@@ -1,0 +1,42 @@
+[
+  {
+    "path": "src/core/boxplot.ts",
+    "sha256": "a279ac5dbdc24faa65d5251b50367a31296ca266fb2a15b91e96980c7ecce717"
+  },
+  {
+    "path": "src/core/frequency.ts",
+    "sha256": "2eddb87c699980d89762a6e06569500db48789f2187422085600fcf41ea2653a"
+  },
+  {
+    "path": "src/core/numeric.ts",
+    "sha256": "0da333f9166c464eaa964e265842471945e5c84135b73c6f5853f105585eeafc"
+  },
+  {
+    "path": "src/core/quantiles.ts",
+    "sha256": "d56364fb229ae1b625c33abc573e09c2e0d8f9375c309cbd0112ff793e0f9d9e"
+  },
+  {
+    "path": "src/core/summary.ts",
+    "sha256": "48e943e3b88d4f242ef746f69040f3164e8afe551770ccb7822ac4256143fdd5"
+  },
+  {
+    "path": "src/domain/types.ts",
+    "sha256": "6dc7c2aa2027a0c2464fe4e8fa9f3fb5848e9bdb4804b8a21ee09e209cea3722"
+  },
+  {
+    "path": "tests/csv.test.mjs",
+    "sha256": "6fa59e53160e533bf27162a35c6d56a62215a556b7457c87121808c1ec0340b7"
+  },
+  {
+    "path": "tests/numeric.test.mjs",
+    "sha256": "49eeed865983f75954f64eacc611f7cdfd13113017abbdcdb72a9bd9c7f004f5"
+  },
+  {
+    "path": "tests/reports.test.mjs",
+    "sha256": "82bcaee811cdbdfd5c89b0a3a1e1cec7261177c4c2a04eefb1fb7adb5f13961c"
+  },
+  {
+    "path": "tests/fixtures/numpy-oracle.json",
+    "sha256": "6114d3b845e764a1b3e9055467f3b47bd6c8cca46dffc530f81428b62229a07f"
+  }
+]

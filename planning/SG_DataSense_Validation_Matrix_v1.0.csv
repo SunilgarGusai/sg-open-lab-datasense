@@ -1,0 +1,45 @@
+Test ID,Test name,Input fixture,Expected condition,Priority,Test class
+DS-T001,Basic mean/median,1;2;3;4,mean=2.5;median=2.5;sum=10;range=3,P0,Oracle
+DS-T002,Quantile type 7,1;2;3;4,Q1=1.75;Q2=2.5;Q3=3.25;IQR=1.5,P0,Oracle
+DS-T003,Population variance,1;2;3;4,population variance=1.25;population SD=sqrt(1.25),P0,Oracle
+DS-T004,Sample variance,1;2;3;4,sample variance=5/3;sample SD=sqrt(5/3),P0,Oracle
+DS-T005,Single value,10,sample variance=undefined;population variance=0;median=10,P0,Unit
+DS-T006,No observations,,all statistics explicitly unavailable;no crash,P0,Unit
+DS-T007,All constant,5;5;5;5,variance=0;IQR=0;mode=5;degenerate boxplot,P0,Unit
+DS-T008,Repeated mode,1;1;2;3,mode=1,P0,Oracle
+DS-T009,Multimodal,1;1;2;2;3,modes=1|2,P0,Unit
+DS-T010,All distinct,1;2;3,mode=no uniquely informative mode,P0,Unit
+DS-T011,Negative values,-10;-5;0;5,mean=-2.5;correct range and order,P0,Oracle
+DS-T012,Mixed missing,2;NA;4;;N/A,valid=2;missing=3;mean=3,P0,Unit
+DS-T013,Invalid string,2;hello;4,valid=2;invalid=1;mean=3,P0,Unit
+DS-T014,Zero is valid,0;0;2,valid=3;zeros retained,P0,Unit
+DS-T015,Scientific notation,1e2;-2.5E1,values parsed 100 and -25,P0,Unit
+DS-T016,Reject nonfinite,NaN;Infinity;1,valid=1;invalid=2,P0,Unit
+DS-T017,Reject thousands separators,"1,234;5",ambiguous value not silently read as 1234,P0,Import
+DS-T018,UTF-8 BOM,header with BOM,header normalized;values read,P0,Import
+DS-T019,Quoted CSV,"""score, final"",name",quoted header remains one column,P0,Import
+DS-T020,Duplicate headers,"x,x",distinct internal IDs and user warning,P0,Import
+DS-T021,Malformed CSV,unclosed quote,actionable error and no crash,P0,Import
+DS-T022,Header only,score\n,no observations state,P0,Import
+DS-T023,Wrong numeric column,name;score,name not auto-coerced;choose score,P0,Import
+DS-T024,Max file limit,file > 5MiB,graceful rejection with limit stated,P0,Performance
+DS-T025,50k row cap,50001 rows,graceful rejection or clearly documented guardrail,P0,Performance
+DS-T026,Frequency reconciliation,1;2;2;3;4,sum bin frequencies=5;cumulative final=5,P0,Unit
+DS-T027,Bin boundaries,0;1;2;3,each endpoint counted exactly once;max included,P0,Unit
+DS-T028,Ogive start point,0;1;2;3,initial lower-bound cumulative=0;end=4,P0,Chart
+DS-T029,Constant histogram,4;4;4,nonzero width representable;all three observations counted,P0,Chart
+DS-T030,Box plot outlier,1;2;3;4;100,whiskers to observed values inside fences;100 flagged if beyond,P0,Chart
+DS-T031,Large location offsets,1000000000000;1000000000001;1000000000002,stable variance near 2/3;no catastrophic cancellation,P0,Oracle
+DS-T032,No data transmission,uploaded local fixture,no upload to network or unexpected external telemetry,P0,Privacy
+DS-T033,CSV formula prefix,=HYPERLINK(...),export not executed as formula in spreadsheet,P0,Security
+DS-T034,HTML injection attempt,<img onerror=...>,render as inert text;not executable,P0,Security
+DS-T035,Keyboard only workflow,sample dataset,all main actions reachable with keyboard,P0,Accessibility
+DS-T036,Accessible chart alternative,histogram,equivalent frequency table and textual summary available,P0,Accessibility
+DS-T037,Reproducibility metadata,any valid dataset,manifest contains method;version;bin edges;n;exclusion counts,P0,Export
+DS-T038,Precision export,1;2;3;4,export not rounded more aggressively than screen without disclosure,P0,Export
+DS-T039,Import empty column,blank;blank,no division by zero;recommend select another variable,P0,Unit
+DS-T040,Median with ties,2;2;2;3,median=2,P0,Oracle
+DS-T041,Unsorted input,4;1;3;2,"same stats as sorted [1,2,3,4]",P0,Oracle
+DS-T042,Percentile endpoints,1;3;10,P0=min=1;P100=max=10,P0,Oracle
+DS-T043,Bin count change,1;2;3;4;5,statistics constant;frequency grouping changes validly,P0,Integration
+DS-T044,Repeated calculations,same dataset and config,identical numeric values and bin edges,P0,Reproducibility

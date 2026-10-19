@@ -1,0 +1,20 @@
+Issue ID,Title,Priority,Workstream,Acceptance criteria,Depends on
+DS-01,"Repository skeleton, policy files and CI",P0,Foundation,test/lint/build jobs pass,DS-None
+DS-02,Define schema and statistic method contract,P0,Core,public method docs and typed interfaces,DS-01
+DS-03,Reference fixture oracles via Python/NumPy,P0,Core,expected values frozen and traceable,DS-02
+DS-04,Implement robust numeric summaries,P0,Core,"tests T001-T016,T031,T040-T042 pass",DS-03
+DS-05,Implement Type7 quantiles/percentiles,P0,Core,"tests T002,T042 pass",DS-03
+DS-06,Parse and validate UTF-8 CSV input,P0,Input,"tests T017-T025,T039 pass",DS-01
+DS-07,Select column + expose exclusions,P0,Input,valid/missing/invalid counts shown,DS-06
+DS-08,Deterministic frequency bins,P0,Distribution,"tests T026,T027,T043 pass",DS-04
+DS-09,"Ogive, histogram, boxplot rules",P0,Distribution,tests T028-T030 and chart tables pass,DS-08
+DS-10,Explanation panel with formula provenance,P0,Education,definitions match implemented math,DS-04
+DS-11,Summary/frequency/chart/JSON exports,P0,Export,"reimport, formula safety and manifest tests pass",DS-08
+DS-12,"Privacy, accessibility and mobile QA",P0,Quality,tests T032-T036 pass,DS-11
+DS-13,Examples + docs + reproducibility guide,P0,Documentation,new user completes walkthrough,DS-12
+DS-14,Independent pilot with first users,P0,Validation,15-25 participants and bug triage record,DS-13
+DS-15,Public beta and LinkedIn demonstration,P0,Release,"version tag, deploy, real demo verified",DS-14
+DS-16,XLSX import,P1,Future,format and data policy tested,DS-15
+DS-17,Alternative quartile definitions,P1,Future,method choice explicit and tested,DS-15
+DS-18,Correlation and regression,P2,Future,new separately scoped PRD,DS-15
+DS-19,AI narrative interpretation,P2,Future,risk/privacy/budget review required,DS-15
