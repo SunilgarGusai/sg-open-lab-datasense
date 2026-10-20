@@ -1,0 +1,83 @@
+﻿{
+    "sourceSha256":  "B77E02FB7A6ED0DEA8E67EAFD7648845597C06517172BBBE19FC4F2B654C0FBE",
+    "method":  "Excel Workbooks.Open, local CSV, read-only, updates disabled; harmless arithmetic prefixes only",
+    "operatingSystem":  "Windows (64-bit) NT 10.00",
+    "build":  20430,
+    "status":  "pass",
+    "limitations":  "This does not verify every spreadsheet, locale or import/re-save route.",
+    "excelVersion":  "16.0",
+    "checkedCells":  [
+                         {
+                             "row":  2,
+                             "hasFormula":  false,
+                             "value":  "\u0027=1+1",
+                             "display":  "\u0027=1+1"
+                         },
+                         {
+                             "row":  3,
+                             "hasFormula":  false,
+                             "value":  "\u0027+1+1",
+                             "display":  "\u0027+1+1"
+                         },
+                         {
+                             "row":  4,
+                             "hasFormula":  false,
+                             "value":  "\u0027-1+1",
+                             "display":  "\u0027-1+1"
+                         },
+                         {
+                             "row":  5,
+                             "hasFormula":  false,
+                             "value":  "\u0027@SUM(1,1)",
+                             "display":  "\u0027@SUM(1,1)"
+                         },
+                         {
+                             "row":  6,
+                             "hasFormula":  false,
+                             "value":  "\u0027 =1+1",
+                             "display":  "\u0027 =1+1"
+                         },
+                         {
+                             "row":  7,
+                             "hasFormula":  false,
+                             "value":  "\u0027\t=1+1",
+                             "display":  "\u0027\t=1+1"
+                         },
+                         {
+                             "row":  8,
+                             "hasFormula":  false,
+                             "value":  "\u0027\r=1+1",
+                             "display":  "\u0027\r=1+1"
+                         },
+                         {
+                             "row":  9,
+                             "hasFormula":  false,
+                             "value":  "\u0027\n=1+1",
+                             "display":  "\u0027\n=1+1"
+                         },
+                         {
+                             "row":  10,
+                             "hasFormula":  false,
+                             "value":  "\u0027ï»¿=1+1",
+                             "display":  "\u0027ï»¿=1+1"
+                         },
+                         {
+                             "row":  11,
+                             "hasFormula":  false,
+                             "value":  "\u0027â€‹=1+1",
+                             "display":  "\u0027â€‹=1+1"
+                         },
+                         {
+                             "row":  12,
+                             "hasFormula":  false,
+                             "value":  "\u0027\u0027already text",
+                             "display":  "\u0027\u0027already text"
+                         },
+                         {
+                             "row":  13,
+                             "hasFormula":  false,
+                             "value":  "ordinary",
+                             "display":  "ordinary"
+                         }
+                     ]
+}

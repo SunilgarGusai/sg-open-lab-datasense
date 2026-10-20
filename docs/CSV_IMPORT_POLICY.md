@@ -11,7 +11,16 @@
 
 ## Column handling and exclusions
 
-Duplicate headers are displayed as `score`, `score (2)` etc. Distinct index-derived IDs (`column-0`, `column-1`) preserve original order, and warnings explain the renaming.
+Duplicate headers are displayed as `score`, `score (2)` etc. Generated suffixes
+reserve all original names, case-insensitively: `score,score (2),score` becomes
+`score,score (2),score (3)`. Distinct index-derived IDs (`column-0`, `column-1`)
+preserve original order, and warnings explain the renaming.
+
+An extra delimiter rejects an overwide record immediately, before consuming its
+next field. Quoted commas remain ordinary field content. `parseCsvText` measures
+UTF-8 bytes itself; optional supplied byte metadata must match exactly or raises
+`INVALID_BYTE_LENGTH`. `parseCsvBytes` retains the original byte count, including
+a UTF-8 BOM, for hashing and export provenance.
 
 A numerical candidate must contain at least one valid finite number; nonnumeric columns are listed but not converted. For the selected column, blank/NA/N/A/null/- map to missing; all other text that fails strict decimal syntax maps to invalid. In particular `NaN`, `Infinity`, `1,234`, `1_234`, currency signs, and hex values are invalid. Missing and invalid values are never silently replaced by zero. The application displays row, valid, missing and invalid counts.
 

@@ -1,0 +1,136 @@
+{
+  "date": "2026-10-20T14:26:42.516Z",
+  "browser": "155.0.4283.62",
+  "checks": [
+    {
+      "name": "focus indicator contrast against white",
+      "status": "pass",
+      "details": {
+        "color": "rgb(23, 95, 149)",
+        "ratio": 6.7582778118023485
+      }
+    },
+    {
+      "name": "computed text and chart contrast palette",
+      "status": "pass",
+      "details": [
+        {
+          "name": "body",
+          "ratio": 14.208293361621447
+        },
+        {
+          "name": "muted",
+          "ratio": 5.797194247632197
+        },
+        {
+          "name": "button",
+          "ratio": 6.7582778118023485
+        },
+        {
+          "name": "error",
+          "ratio": 6.467161084801537
+        },
+        {
+          "name": "chart text",
+          "ratio": 9.593111482116313
+        },
+        {
+          "name": "chart axes",
+          "ratio": 5.402915949832489
+        },
+        {
+          "name": "bars",
+          "ratio": 5.801469876354555
+        },
+        {
+          "name": "box edge",
+          "ratio": 4.516389626775684
+        },
+        {
+          "name": "median",
+          "ratio": 3.994145763054144
+        }
+      ]
+    },
+    {
+      "name": "320 CSS-pixel reflow and keyboard-readable charts",
+      "status": "pass",
+      "details": [
+        {
+          "id": "frequency-chart",
+          "scrollLeft": 1,
+          "client": 236,
+          "scroll": 740,
+          "renderedFont": 12
+        },
+        {
+          "id": "ogive-chart",
+          "scrollLeft": 2,
+          "client": 236,
+          "scroll": 740,
+          "renderedFont": 12
+        },
+        {
+          "id": "boxplot-chart",
+          "scrollLeft": 1,
+          "client": 236,
+          "scroll": 740,
+          "renderedFont": 12
+        }
+      ]
+    },
+    {
+      "name": "colliding labels remain unique in visible selector",
+      "status": "pass",
+      "details": [
+        "score (1 numeric)",
+        "score (2) (1 numeric)",
+        "score (3) (1 numeric)"
+      ]
+    },
+    {
+      "name": "near-5MiB-100-columns-4x-cpu",
+      "status": "pass",
+      "details": {
+        "bytes": 5242390,
+        "rows": 26210,
+        "elapsedMs": 11572
+      }
+    },
+    {
+      "name": "31000-rows-100-columns-missing-invalid-4x-cpu",
+      "status": "pass",
+      "details": {
+        "bytes": 5177390,
+        "rows": 31000,
+        "elapsedMs": 9092
+      }
+    },
+    {
+      "name": "50000-rows-50-columns-4x-cpu",
+      "status": "pass",
+      "details": {
+        "bytes": 5000190,
+        "rows": 50000,
+        "elapsedMs": 5534
+      }
+    },
+    {
+      "name": "overwide input rejects and recovers",
+      "status": "pass",
+      "details": {
+        "status": "Loaded Synthetic sample scores: 10 rows, 2 columns. Processed locally. Source SHA-256 recorded."
+      }
+    },
+    {
+      "name": "runtime has no page errors",
+      "status": "pass",
+      "details": []
+    }
+  ],
+  "limitations": [
+    "CPU throttling simulates reduced processor speed; it is not a real slow-device test.",
+    "Computed contrast and keyboard/reflow checks are not screen-reader or WCAG certification."
+  ],
+  "status": "pass"
+}

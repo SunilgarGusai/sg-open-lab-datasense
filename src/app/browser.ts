@@ -6,7 +6,7 @@ import { histogramSvg,ogiveSvg,boxplotSvg } from './charts.js';
 import type { CsvDataset,CsvColumnProfile } from '../index.js';
 import type { ExportContext } from '../export/report.js';
 
-const VERSION='0.4.0-alpha.1';
+const VERSION='0.4.1-alpha.1';
 function byId<T extends HTMLElement>(id:string):T {
   const el=document.getElementById(id);
   if (!el) throw new Error(`Missing interface element ${id}`);

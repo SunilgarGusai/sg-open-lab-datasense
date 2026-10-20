@@ -8,8 +8,8 @@
 
 /* DS-09/DS-11 chart and export panels */
 .visual {border:1px solid var(--line);background:#fff;border-radius:10px;padding:12px;margin:0 0 12px}
-.chart-shell {width:100%;min-height:130px;overflow:hidden}
-.chart-shell svg {width:100%;height:auto;display:block}
+.chart-shell {width:100%;min-height:130px;overflow-x:auto}
+.chart-shell svg {width:100%;min-width:740px;height:auto;display:block}
 .visual figcaption {font-size:.77rem;color:var(--muted);margin-top:7px}
 .exports {margin:24px 0 8px;border-top:1px solid var(--line);padding-top:4px}
 .exports p {font-size:.82rem;color:var(--muted)}
@@ -23,4 +23,6 @@
 table caption.table-caption {text-align:left;font-weight:700;color:var(--ink);padding:10px 8px 6px;white-space:normal;font-size:.86rem}
 #main:focus {outline:none}
 .table-scroll:focus-visible {outline:3px solid var(--accent);outline-offset:3px}
+button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible,.chart-shell:focus-visible {outline:3px solid var(--accent);outline-offset:3px}
+input[type=file],select {border-color:var(--muted)}
 @media (forced-colors:active) {button,.status,.metric,.quality span {forced-color-adjust:auto} .chart-shell svg {forced-color-adjust:auto}}

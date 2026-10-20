@@ -1,0 +1,14 @@
+✔ runtime serves verified files with security headers, GET and HEAD (60.7188ms)
+✔ runtime has no upload route, directory listing, traversal or unknown-file access (19.848ms)
+✔ runtime supports a project subpath without leaking root files (10.8481ms)
+✔ runtime fails closed on tampered or missing published bytes (29.911ms)
+✔ runtime rejects unsafe manifest paths and duplicate entries (31.7492ms)
+✔ runtime refuses linked assets and requires an explicit origin for external binding (9.1094ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 6
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 242.6078

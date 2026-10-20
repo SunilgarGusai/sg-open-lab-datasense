@@ -6,3 +6,7 @@ coverage/
 _site/
 __pycache__/
 .venv/
+.runtime/
+_runtime/
+*.key
+*.pem

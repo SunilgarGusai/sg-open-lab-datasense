@@ -1,0 +1,25 @@
+{
+  "status": "pass",
+  "scope": "Local TLS with an explicitly trusted temporary certificate; not public HTTPS deployment",
+  "certificateValidation": true,
+  "untrustedCertificateRejected": true,
+  "wrongHostnameRejected": true,
+  "protocol": "TLSv1.3",
+  "headers": {
+    "content-security-policy": "default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'",
+    "x-content-type-options": "nosniff",
+    "x-frame-options": "DENY",
+    "referrer-policy": "no-referrer",
+    "cache-control": "no-store",
+    "permissions-policy": "camera=(), microphone=(), geolocation=()",
+    "cross-origin-opener-policy": "same-origin",
+    "cross-origin-resource-policy": "same-origin",
+    "x-robots-tag": "noindex, nofollow, noarchive",
+    "strict-transport-security": "max-age=31536000",
+    "content-type": "text/html; charset=utf-8",
+    "content-length": "7312",
+    "date": "Tue, 20 Oct 2026 14:25:55 GMT",
+    "connection": "close"
+  },
+  "htmlSha256": "cd73d88d5514899a859329775b89b861af167bf6b76c4734af40c8a91e4a128d"
+}

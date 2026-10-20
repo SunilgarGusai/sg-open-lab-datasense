@@ -1,0 +1,1 @@
+Preserved 10 original core, contract, test and oracle files (SHA-256).

@@ -1,6 +1,6 @@
 {
   "name": "sg-datasense-browser-alpha",
-  "version": "0.4.0-alpha.1",
+  "version": "0.4.1-alpha.1",
   "private": true,
   "type": "module",
   "description": "Development alpha: browser-side CSV analysis, accessible table labels and reproducibility exports",
@@ -15,7 +15,9 @@
     "validate": "npm run typecheck && npm test",
     "test:precompiled": "node --test tests/numeric.test.mjs tests/csv.test.mjs tests/reports.test.mjs",
     "demo:precompiled": "node scripts/demo.mjs",
-    "test:csv": "npm run build && node --test tests/csv.test.mjs"
+    "test:csv": "npm run build && node --test tests/csv.test.mjs tests/csv-hardening.test.mjs",
+    "start": "node scripts/serve.mjs",
+    "package:runtime": "npm run build && node scripts/stage-site.mjs && node scripts/package-runtime.mjs"
   },
   "devDependencies": {
     "axe-core": "4.14.0",

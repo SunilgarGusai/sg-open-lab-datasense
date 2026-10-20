@@ -1,0 +1,136 @@
+✖ DS14-S01: generated labels reserve all literal names regardless of order or case (4.2728ms)
+✖ DS14-S02: excessive header width rejects before reading the next field (0.4694ms)
+✖ DS14-S02: data width rejects before reading an impossible extra field (0.1474ms)
+✔ DS14-S02: exact width and quoted commas still parse (0.737ms)
+✖ DS14-S03: supplied metadata cannot bypass the text byte limit (334.6009ms)
+✖ DS14-S03: invalid or mismatching metadata rejects explicitly (0.2715ms)
+✔ DS14-S03: both entry points retain exact UTF-8 byte counts including BOM (0.8717ms)
+ℹ tests 7
+ℹ suites 0
+ℹ pass 2
+ℹ fail 5
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 484.6678
+
+✖ failing tests:
+
+test at tests\csv-hardening.test.mjs:9:1
+✖ DS14-S01: generated labels reserve all literal names regardless of order or case (4.2728ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  2 !== 3
+  
+      at TestContext.<anonymous> (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/csv-hardening.test.mjs:13:12)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.start (node:internal/test_runner/test:1242:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 2,
+    expected: 3,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at tests\csv-hardening.test.mjs:21:1
+✖ DS14-S02: excessive header width rejects before reading the next field (0.4694ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  CsvImportError: Unclosed quoted field in row 1.
+      at raises (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/csv-hardening.test.mjs:6:10)
+      at TestContext.<anonymous> (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/csv-hardening.test.mjs:22:3)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: CsvImportError: Unclosed quoted field in row 1.
+        at parseCsvText (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/dist/import/csv.js:90:15)
+        at file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/csv-hardening.test.mjs:22:32
+        at getActual (node:assert:611:5)
+        at strict.throws (node:assert:759:24)
+        at raises (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/csv-hardening.test.mjs:6:10)
+        at TestContext.<anonymous> (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/csv-hardening.test.mjs:22:3)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19),
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at tests\csv-hardening.test.mjs:26:1
+✖ DS14-S02: data width rejects before reading an impossible extra field (0.1474ms)
+  AssertionError [ERR_ASSERTION]: The validation function is expected to return "true". Received false
+  
+  Caught error:
+  
+  CsvImportError: Unclosed quoted field in row 2.
+      at raises (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/csv-hardening.test.mjs:6:10)
+      at TestContext.<anonymous> (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/csv-hardening.test.mjs:27:3)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: CsvImportError: Unclosed quoted field in row 2.
+        at parseCsvText (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/dist/import/csv.js:90:15)
+        at file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/csv-hardening.test.mjs:27:40
+        at getActual (node:assert:611:5)
+        at strict.throws (node:assert:759:24)
+        at raises (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/csv-hardening.test.mjs:6:10)
+        at TestContext.<anonymous> (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/csv-hardening.test.mjs:27:3)
+        at Test.runInAsyncScope (node:async_hooks:227:14)
+        at Test.run (node:internal/test_runner/test:1382:25)
+        at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+        at Test.postRun (node:internal/test_runner/test:1522:19),
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at tests\csv-hardening.test.mjs:40:1
+✖ DS14-S03: supplied metadata cannot bypass the text byte limit (334.6009ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at raises (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/csv-hardening.test.mjs:6:10)
+      at TestContext.<anonymous> (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/csv-hardening.test.mjs:41:3)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'throws',
+    diff: 'simple'
+  }
+
+test at tests\csv-hardening.test.mjs:45:1
+✖ DS14-S03: invalid or mismatching metadata rejects explicitly (0.2715ms)
+  AssertionError [ERR_ASSERTION]: Missing expected exception.
+      at raises (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/csv-hardening.test.mjs:6:10)
+      at TestContext.<anonymous> (file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/tests/csv-hardening.test.mjs:47:5)
+      at Test.runInAsyncScope (node:async_hooks:227:14)
+      at Test.run (node:internal/test_runner/test:1382:25)
+      at Test.processPendingSubtests (node:internal/test_runner/test:960:18)
+      at Test.postRun (node:internal/test_runner/test:1522:19)
+      at Test.run (node:internal/test_runner/test:1447:12)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:960:7) {
+    generatedMessage: false,
+    code: 'ERR_ASSERTION',
+    actual: undefined,
+    operator: 'throws',
+    diff: 'simple'
+  }

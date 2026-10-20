@@ -1,0 +1,118 @@
+✖ runtime serves verified files with security headers, GET and HEAD (16.4863ms)
+✖ runtime has no upload route, directory listing, traversal or unknown-file access (16.2452ms)
+✖ runtime supports a project subpath without leaking root files (6.9805ms)
+✖ runtime fails closed on tampered or missing published bytes (8.7267ms)
+✖ runtime rejects unsafe manifest paths and duplicate entries (7.5346ms)
+✖ runtime refuses linked assets and requires an explicit origin for external binding (7.9775ms)
+ℹ tests 6
+ℹ suites 0
+ℹ pass 0
+ℹ fail 6
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 247.285
+
+✖ failing tests:
+
+test at tests\server.test.mjs:41:1
+✖ runtime serves verified files with security headers, GET and HEAD (16.4863ms)
+  Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'C:\Users\sunil\.codex\.chatgpt-projects\g-p-680991721c648191a479b89134a0790d\work\sg-open-lab-datasense\scripts\serve.mjs' imported from C:\Users\sunil\.codex\.chatgpt-projects\g-p-680991721c648191a479b89134a0790d\work\sg-open-lab-datasense\tests\server.test.mjs
+      at finalizeResolution (node:internal/modules/esm/resolve:271:11)
+      at moduleResolve (node:internal/modules/esm/resolve:865:10)
+      at defaultResolve (node:internal/modules/esm/resolve:992:11)
+      at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+      at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+      at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+      at #resolve (node:internal/modules/esm/loader:683:17)
+      at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+      at node:internal/modules/esm/loader:632:32
+      at TracingChannel.tracePromise (node:diagnostics_channel:362:14) {
+    code: 'ERR_MODULE_NOT_FOUND',
+    url: 'file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/scripts/serve.mjs'
+  }
+
+test at tests\server.test.mjs:54:1
+✖ runtime has no upload route, directory listing, traversal or unknown-file access (16.2452ms)
+  Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'C:\Users\sunil\.codex\.chatgpt-projects\g-p-680991721c648191a479b89134a0790d\work\sg-open-lab-datasense\scripts\serve.mjs' imported from C:\Users\sunil\.codex\.chatgpt-projects\g-p-680991721c648191a479b89134a0790d\work\sg-open-lab-datasense\tests\server.test.mjs
+      at finalizeResolution (node:internal/modules/esm/resolve:271:11)
+      at moduleResolve (node:internal/modules/esm/resolve:865:10)
+      at defaultResolve (node:internal/modules/esm/resolve:992:11)
+      at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+      at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+      at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+      at #resolve (node:internal/modules/esm/loader:683:17)
+      at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+      at node:internal/modules/esm/loader:632:32
+      at TracingChannel.tracePromise (node:diagnostics_channel:362:14) {
+    code: 'ERR_MODULE_NOT_FOUND',
+    url: 'file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/scripts/serve.mjs'
+  }
+
+test at tests\server.test.mjs:62:1
+✖ runtime supports a project subpath without leaking root files (6.9805ms)
+  Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'C:\Users\sunil\.codex\.chatgpt-projects\g-p-680991721c648191a479b89134a0790d\work\sg-open-lab-datasense\scripts\serve.mjs' imported from C:\Users\sunil\.codex\.chatgpt-projects\g-p-680991721c648191a479b89134a0790d\work\sg-open-lab-datasense\tests\server.test.mjs
+      at finalizeResolution (node:internal/modules/esm/resolve:271:11)
+      at moduleResolve (node:internal/modules/esm/resolve:865:10)
+      at defaultResolve (node:internal/modules/esm/resolve:992:11)
+      at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+      at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+      at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+      at #resolve (node:internal/modules/esm/loader:683:17)
+      at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+      at node:internal/modules/esm/loader:632:32
+      at TracingChannel.tracePromise (node:diagnostics_channel:362:14) {
+    code: 'ERR_MODULE_NOT_FOUND',
+    url: 'file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/scripts/serve.mjs'
+  }
+
+test at tests\server.test.mjs:69:1
+✖ runtime fails closed on tampered or missing published bytes (8.7267ms)
+  Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'C:\Users\sunil\.codex\.chatgpt-projects\g-p-680991721c648191a479b89134a0790d\work\sg-open-lab-datasense\scripts\serve.mjs' imported from C:\Users\sunil\.codex\.chatgpt-projects\g-p-680991721c648191a479b89134a0790d\work\sg-open-lab-datasense\tests\server.test.mjs
+      at finalizeResolution (node:internal/modules/esm/resolve:271:11)
+      at moduleResolve (node:internal/modules/esm/resolve:865:10)
+      at defaultResolve (node:internal/modules/esm/resolve:992:11)
+      at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+      at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+      at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+      at #resolve (node:internal/modules/esm/loader:683:17)
+      at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+      at node:internal/modules/esm/loader:632:32
+      at TracingChannel.tracePromise (node:diagnostics_channel:362:14) {
+    code: 'ERR_MODULE_NOT_FOUND',
+    url: 'file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/scripts/serve.mjs'
+  }
+
+test at tests\server.test.mjs:76:1
+✖ runtime rejects unsafe manifest paths and duplicate entries (7.5346ms)
+  Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'C:\Users\sunil\.codex\.chatgpt-projects\g-p-680991721c648191a479b89134a0790d\work\sg-open-lab-datasense\scripts\serve.mjs' imported from C:\Users\sunil\.codex\.chatgpt-projects\g-p-680991721c648191a479b89134a0790d\work\sg-open-lab-datasense\tests\server.test.mjs
+      at finalizeResolution (node:internal/modules/esm/resolve:271:11)
+      at moduleResolve (node:internal/modules/esm/resolve:865:10)
+      at defaultResolve (node:internal/modules/esm/resolve:992:11)
+      at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+      at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+      at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+      at #resolve (node:internal/modules/esm/loader:683:17)
+      at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+      at node:internal/modules/esm/loader:632:32
+      at TracingChannel.tracePromise (node:diagnostics_channel:362:14) {
+    code: 'ERR_MODULE_NOT_FOUND',
+    url: 'file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/scripts/serve.mjs'
+  }
+
+test at tests\server.test.mjs:86:1
+✖ runtime refuses linked assets and requires an explicit origin for external binding (7.9775ms)
+  Error [ERR_MODULE_NOT_FOUND]: Cannot find module 'C:\Users\sunil\.codex\.chatgpt-projects\g-p-680991721c648191a479b89134a0790d\work\sg-open-lab-datasense\scripts\serve.mjs' imported from C:\Users\sunil\.codex\.chatgpt-projects\g-p-680991721c648191a479b89134a0790d\work\sg-open-lab-datasense\tests\server.test.mjs
+      at finalizeResolution (node:internal/modules/esm/resolve:271:11)
+      at moduleResolve (node:internal/modules/esm/resolve:865:10)
+      at defaultResolve (node:internal/modules/esm/resolve:992:11)
+      at #cachedDefaultResolve (node:internal/modules/esm/loader:701:20)
+      at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:721:38)
+      at ModuleLoader.resolveSync (node:internal/modules/esm/loader:759:56)
+      at #resolve (node:internal/modules/esm/loader:683:17)
+      at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:603:35)
+      at node:internal/modules/esm/loader:632:32
+      at TracingChannel.tracePromise (node:diagnostics_channel:362:14) {
+    code: 'ERR_MODULE_NOT_FOUND',
+    url: 'file:///C:/Users/sunil/.codex/.chatgpt-projects/g-p-680991721c648191a479b89134a0790d/work/sg-open-lab-datasense/scripts/serve.mjs'
+  }

@@ -9,7 +9,7 @@ import type { NumericColumn } from "../domain/types.js";
 export const CSV_LIMITS = Object.freeze({ maxBytes: 5 * 1024 * 1024, maxDataRows: 50_000, maxColumns: 100 });
 
 export type CsvIssueCode = "FILE_TOO_LARGE" | "INVALID_UTF8" | "EMPTY_CSV" | "MALFORMED_QUOTE" |
-  "UNEXPECTED_QUOTE" | "FIELD_COUNT_MISMATCH" | "ROW_LIMIT" | "COLUMN_LIMIT" | "BLANK_HEADER";
+  "UNEXPECTED_QUOTE" | "FIELD_COUNT_MISMATCH" | "ROW_LIMIT" | "COLUMN_LIMIT" | "BLANK_HEADER" | "INVALID_BYTE_LENGTH";
 
 export class CsvImportError extends Error {
   constructor(public readonly code: CsvIssueCode, message: string, public readonly row?: number) {
@@ -39,8 +39,19 @@ export interface CsvColumnProfile {
 
 /** CSV has header row; malformed records reject rather than produce incorrect statistics. */
 export function parseCsvText(source: string, byteLength?: number): CsvDataset {
-  const bytes = byteLength ?? new TextEncoder().encode(source).byteLength;
+  // A caller-supplied count is never a substitute for measuring untrusted text.
+  if (source.length > CSV_LIMITS.maxBytes || (Number.isFinite(byteLength) && byteLength! > CSV_LIMITS.maxBytes))
+    throw new CsvImportError("FILE_TOO_LARGE", "CSV exceeds the 5 MiB limit.");
+  const bytes = new TextEncoder().encode(source).byteLength;
   if (bytes > CSV_LIMITS.maxBytes) throw new CsvImportError("FILE_TOO_LARGE", `CSV exceeds the 5 MiB limit (${bytes} bytes).`);
+  if (byteLength !== undefined && (!Number.isSafeInteger(byteLength) || byteLength !== bytes))
+    throw new CsvImportError("INVALID_BYTE_LENGTH", "Supplied byte length must equal the UTF-8 encoded text length.");
+  return parseBoundedText(source, bytes);
+}
+
+// Only the two checked entry points may supply this trusted byte count. The byte
+// decoder removes a UTF-8 BOM; retain its original length for reproducibility.
+function parseBoundedText(source: string, bytes: number): CsvDataset {
   const input = source.charCodeAt(0) === 0xfeff ? source.slice(1) : source;
   if (input.trim().length === 0) throw new CsvImportError("EMPTY_CSV", "CSV is empty. Include a header row.");
 
@@ -50,7 +61,15 @@ export function parseCsvText(source: string, byteLength?: number): CsvDataset {
   let logicalRow = 1;
   const allRows: string[][] = [];
   let endedWithNewline = false;
-  const commitField = (): void => { row.push(field); field = ""; state = "start"; };
+  const commitField = (anotherField = false): void => {
+    const limit = allRows.length === 0 ? CSV_LIMITS.maxColumns : allRows[0]!.length;
+    if (row.length >= limit || (anotherField && row.length + 1 >= limit)) {
+      if (allRows.length === 0)
+        throw new CsvImportError("COLUMN_LIMIT", "CSV exceeds the 100-column limit.", logicalRow);
+      throw new CsvImportError("FIELD_COUNT_MISMATCH", `Row ${logicalRow} contains more than the expected ${limit} fields.`, logicalRow);
+    }
+    row.push(field); field = ""; state = "start";
+  };
   const commitRow = (): void => {
     commitField();
     if (allRows.length === 0) {
@@ -75,7 +94,7 @@ export function parseCsvText(source: string, byteLength?: number): CsvDataset {
       } else field += ch;
       continue;
     }
-    if (ch === ',') { commitField(); continue; }
+    if (ch === ',') { commitField(true); continue; }
     if (ch === '\r' || ch === '\n') {
       commitRow();
       if (ch === '\r' && input[i+1] === '\n') i++;
@@ -97,13 +116,22 @@ export function parseCsvText(source: string, byteLength?: number): CsvDataset {
 
   const rawHeaders = allRows[0]!;
   const seen = new Map<string,number>();
+  const reserved = new Set(rawHeaders.map(h => h.trim().toLocaleLowerCase("en-US")));
+  const used = new Set<string>();
   const headers: CsvHeader[] = rawHeaders.map((header, index) => {
     const name = header.trim();
     if (!name) throw new CsvImportError("BLANK_HEADER", `Header ${index+1} is blank. Give each column a name.`, 1);
     const key = name.toLocaleLowerCase("en-US");
     const ordinal = (seen.get(key) ?? 0) + 1;
     seen.set(key, ordinal);
-    return { id:`column-${index}`, index, original:header, display:ordinal===1?name:`${name} (${ordinal})`, duplicate:ordinal>1 };
+    let display = name;
+    if (ordinal > 1) {
+      let suffix = ordinal;
+      do { display = `${name} (${suffix++})`; }
+      while (reserved.has(display.toLocaleLowerCase("en-US")) || used.has(display.toLocaleLowerCase("en-US")));
+    }
+    used.add(display.toLocaleLowerCase("en-US"));
+    return { id:`column-${index}`, index, original:header, display, duplicate:ordinal>1 };
   });
   const warnings: string[] = [];
   if (headers.some(h=>h.duplicate)) warnings.push("Duplicate headers were assigned unique display labels; original column order is preserved.");
@@ -117,7 +145,7 @@ export function parseCsvBytes(bytes: Uint8Array): CsvDataset {
   let text: string;
   try { text = new TextDecoder("utf-8", { fatal:true }).decode(bytes); }
   catch { throw new CsvImportError("INVALID_UTF8", "File is not valid UTF-8. Save it as UTF-8 CSV and try again."); }
-  return parseCsvText(text, bytes.byteLength);
+  return parseBoundedText(text, bytes.byteLength);
 }
 
 export function profileCsvColumns(dataset: CsvDataset): readonly CsvColumnProfile[] {

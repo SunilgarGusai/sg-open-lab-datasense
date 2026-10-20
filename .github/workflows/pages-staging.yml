@@ -53,8 +53,20 @@ jobs:
         run: python scripts/generate_numpy_oracle.py --verify 2>&1 | tee evidence/ci/numpy-oracle.log
       - name: Package minimal alpha site
         run: node scripts/stage-site.mjs 2>&1 | tee evidence/ci/site-package.log
+      - name: Package the ready-to-run alpha
+        run: node scripts/package-runtime.mjs
+      - name: Verify direct TLS and certificate rejection
+        run: |
+          openssl req -x509 -newkey rsa:2048 -nodes -keyout "$RUNNER_TEMP/test.key" -out "$RUNNER_TEMP/test.pem" -days 1 -subj '/CN=localhost' -addext 'subjectAltName=DNS:localhost,IP:127.0.0.1'
+          node scripts/check-tls.mjs --cert "$RUNNER_TEMP/test.pem" --key "$RUNNER_TEMP/test.key" --output evidence/ci/tls.json
       - name: Install browser engines
         run: python -m playwright install --with-deps chromium firefox webkit
+      - name: Verify readable charts, focus and maximum CSV workloads
+        run: |
+          playwright_module="$(python -c "from pathlib import Path; import playwright; print(Path(playwright.__file__).parent / 'driver/package/index.mjs')")"
+          node scripts/usability-check.mjs --module "$playwright_module" --output evidence/usability
+      - name: Validate the shipped server and its project path
+        run: python scripts/runtime-browser-smoke.py
       - name: Isolate WebKit CSP and screenshot instrumentation
         run: python scripts/probe_select_csp.py --browser webkit --site-root _site --axe node_modules/axe-core/axe.min.js --output evidence/webkit-csp-diagnostic
       - name: Validate the exact artifact before upload
@@ -67,7 +79,7 @@ jobs:
           exit "$browser_failures"
       - name: Preserve staging validation evidence
         if: always()
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
           name: pages-staging-evidence-${{ github.sha }}
           path: evidence/

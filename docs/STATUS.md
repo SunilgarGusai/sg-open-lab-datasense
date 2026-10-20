@@ -1,13 +1,12 @@
-# DataSense Development Status — 20 October 2026
+# DataSense status
 
-- **Current alpha:** `0.4.0-alpha.1`. DS-13 repository, locked CI and guarded staging infrastructure are implemented and the reviewed hosted CI run passes. **Public beta remains NO-GO.**
-- **Private source repository:** [SunilgarGusai/sg-open-lab-datasense](https://github.com/SunilgarGusai/sg-open-lab-datasense). Existing research repositories were not used as the destination.
-- **Verified local commit:** `d55f5abb661f8945bad0e1c9d5cbb75b719b4d8d`. A clean checkout passes typecheck/build and **68/68 tests**, including the unchanged original 53 tests. All **10 protected baseline file hashes** match; the **17-case independent NumPy oracle** is preserved and passes.
-- **Dependency and staging evidence:** npm registry signatures verified for both dependencies; the recorded audit reports no vulnerabilities. Exact-version npm and hashed Python dependency locks are in place. The earlier clean local builds at `d55f5ab` remain documented separately. At reviewed commit `1f4ca2d9c04e8222868c49fc316bcbfeaae90873`, all **19 staging files are byte-identical between Windows and the independent Ubuntu CI build**, including the manifest; see [cross-platform evidence](../evidence/ds13/windows-linux-reproducibility.json).
-- **Local browser evidence:** Ordinary loopback HTTP loaded a built-in sample with the original CSP retained and produced a JSON download with the expected source SHA-256. This was one manual in-app-browser scenario, not a complete HTTPS/browser/privacy audit.
-- **Hosted CI PASS at `1f4ca2d`:** [Run 39317569040](https://github.com/SunilgarGusai/sg-open-lab-datasense/actions/runs/39317569040) passes all **18 browser scenarios and 324 checks** across Chromium 153.0.8010.12, Firefox 155.0 and WebKit 26.6 with Playwright 1.63.0. All **144 export-file hashes** were verified; **36 axe scans** report zero violations with `color-contrast` still incomplete. See [the inspected run-three summary](../evidence/ds13/hosted-run3-summary.json). This recorded pass is scoped to the named commit; later release-candidate commits require their own CI result.
-- **Failure history and browser limits:** [Run one](../evidence/ds13/hosted-run1-summary.json) exposed keyboard access to narrow scrollable tables and the Playwright 1.64.0 native-select CSP issue. Named focusable table regions and keyboard-scroll checks address the table issue. [Run two](../evidence/ds13/hosted-run2-summary.json) still failed WebKit console checks; an isolated 11-fixture/37-check diagnostic traced that failure to Playwright's screenshot helper inserting an inline style. Only WebKit screenshots are now omitted; all application, geometry, keyboard, CSP, console-error, network and storage checks remain active, with no error filter or weaker CSP. Chromium/Firefox provide 72 screenshots. Current WebKit's native-select issue, actual Safari and manual contrast/accessibility review remain open gates.
-- **Pages status:** Not deployed. The current private-repository plan does not support Pages; the manual workflow's `DATASENSE_PAGES_ENABLED` gate remains off. No public staging URL or public beta is claimed.
-- **Open gates:** CI for the final intended release-candidate commit; approved real HTTPS staging and headers/CSP/network/storage/all-download verification; current WebKit and real Safari; the three scoped CSV findings in [the source review](SECURITY_REVIEW_DS13.md); manual WCAG/screen-reader and contrast testing; spreadsheet-application export testing; worst-case 100-column workload on slower devices; ownership/licensing/branding clearance; independent pilot; explicit publication decision.
+Current internal alpha: **0.4.1-alpha.1** (DS-14).
 
-See the [DS-13 release-readiness record](RELEASE_READINESS_DS13.md) for evidence, limitations and exact next gates. The [DS-12 audit](RELEASE_READINESS_DS12.md) remains historical; use the [manual checklist](MANUAL_ACCEPTANCE_CHECKLIST.md) for the outstanding human checks.
+- Ready-to-run packaging, local launcher and an integrity-checking HTTP/TLS server are implemented.
+- DS13-S01/S02/S03 are fixed with seven additional CSV regression tests.
+- Local validation: 81 Node tests, 17 NumPy cases and all ten protected baseline hashes pass.
+- Excel's installed Windows version imported all 12 tested text-prefix cases without formulas.
+- Runtime and site remain static, with no upload API or runtime package dependencies.
+- Final release evidence and unresolved external gates: [DS-14 readiness](RELEASE_READINESS_DS14.md).
+- [DS-13](RELEASE_READINESS_DS13.md) and earlier reports are historical records of their own commits.
+- Source repository remains private. Public beta and a public website are not announced.
