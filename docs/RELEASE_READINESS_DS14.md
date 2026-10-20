@@ -64,6 +64,19 @@ processed it.
 
 ## Acceptance and external release gates
 
+The independent code review found two runtime defects after the first passing
+hosted run, [39439757004](https://github.com/SunilgarGusai/sg-open-lab-datasense/actions/runs/39439757004).
+Default HTTP/HTTPS port authorities are now accepted correctly. Concurrent
+Windows starts were reproduced as two servers, then corrected with a shared
+per-package mutex, atomic state replacement and failure cleanup. External
+binding additionally requires actual TLS; the proxy path stays on loopback.
+Three new server regressions bring local tests to **84/84**, with no skips.
+The Windows lifecycle script passes all four checks: concurrent start produces
+one server, reopen reuses it, stale state recovers, and Stop leaves no instance.
+Hosted CI now includes a Windows lifecycle job. The earlier 81-test table above
+is retained as its original recorded run; the delivered acceptance record
+contains final 84-test and lifecycle logs and the newer exact-commit CI result.
+
 1. **Exact commit/package:** verify hosted CI for the distributed commit, compare
    the site/runtime artifact hashes, smoke-test a freshly extracted runtime and
    retain raw evidence. The delivered acceptance record closes this gate when

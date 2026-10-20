@@ -30,6 +30,7 @@ export async function startServer({root=defaultRoot,host='127.0.0.1',port=8765,
   if (!/^\/(?:[a-zA-Z0-9_-]+\/)*$/.test(basePath)) throw new Error('Base path must be / or /name/');
   if (!loopback.has(host) && !origin) throw new Error('External binding requires an explicit HTTPS origin');
   if (Boolean(cert)!==Boolean(key)) throw new Error('Both TLS certificate and key are required');
+  if (!loopback.has(host) && !cert) throw new Error('External binding requires a TLS certificate; use loopback behind a proxy');
   let configured;
   if (origin) {
     configured = new URL(origin);
@@ -76,8 +77,11 @@ export async function startServer({root=defaultRoot,host='127.0.0.1',port=8765,
         'Content-Length':Buffer.byteLength(body),...extra});
       res.end(req.method==='HEAD'?undefined:body);
     };
-    const allowedHosts = configured ? new Set([configured.host.toLowerCase()]) :
-      new Set(['127.0.0.1','localhost','[::1]'].map(h=>`${h}:${server.address().port}`));
+    const listeningPort=server.address().port;
+    const allowedHosts = configured ?
+      new Set([configured.host.toLowerCase(), ...(!configured.port?[`${configured.hostname.toLowerCase()}:443`]:[])]) :
+      new Set(['127.0.0.1','localhost','[::1]'].flatMap(h=>
+        listeningPort===(cert?443:80)?[h,`${h}:${listeningPort}`]:[`${h}:${listeningPort}`]));
     if (!allowedHosts.has((req.headers.host??'').toLowerCase())) return reply(421,'Unexpected host');
     if (!['GET','HEAD'].includes(req.method)) return reply(405,'Method not allowed',{'Allow':'GET, HEAD'});
     let pathname;

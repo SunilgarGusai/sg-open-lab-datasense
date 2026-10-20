@@ -13,7 +13,8 @@ node scripts/serve.mjs --root _site --port 8765
 node scripts/serve.mjs --root _site --port 8765 --base-path /datasense/
 ```
 
-The default address is `127.0.0.1`. The server verifies the staged file hashes
+The default address is `127.0.0.1`; binding to an external address requires both
+an explicit HTTPS origin and a TLS certificate/key. The server verifies the staged file hashes
 before listening, preloads those bytes, rejects unexpected Host headers, and
 supports GET/HEAD only. It has no upload, write, directory listing or login API.
 It adds CSP (including `frame-ancestors 'none'`), nosniff, no-referrer,

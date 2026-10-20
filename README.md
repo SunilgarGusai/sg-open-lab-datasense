@@ -1,4 +1,4 @@
-# SG Open Lab â€” DataSense v0.4.1 Alpha
+# SG Open Lab — DataSense v0.4.1 Alpha
 
 **Status:** Ready-to-run internal alpha `0.4.1-alpha.1`, *not* publicly deployed. CSV import, validated single-column descriptive statistics, three statistical charts with table alternatives and local reproducibility exports are implemented. The proposed product name and licensing/IP review are not final.
 
@@ -45,7 +45,7 @@ source tests, research evidence, credentials or developer dependencies.
 - Population and sample Welford-based variance (`n` and `n-1` divisors).
 - Exact frequency reconciliation across equal-width bins, with the last upper endpoint included.
 - Less-than ogive from grouped cumulative frequencies.
-- Tukey-style 1.5Ã—IQR outlier fences with whiskers at observed in-fence extrema.
+- Tukey-style 1.5×IQR outlier fences with whiskers at observed in-fence extrema.
 - Missing and invalid values are counted separately and never converted silently to zero.
 
 See [statistical methods](docs/STATISTICAL_METHODS.md) and [CSV import policy](docs/CSV_IMPORT_POLICY.md) for caveats.
@@ -56,8 +56,8 @@ Summary CSV, grouped-frequency CSV, ogive CSV, boxplot CSV, JSON reproducibility
 
 ## Validation evidence
 
-DS-14 adds seven CSV hardening tests and six real HTTP server tests. The local
-suite passes **81/81 tests** including all 53 original tests. The mathematical
+DS-14 adds seven CSV hardening tests and nine real HTTP server tests. The local
+suite passes **84/84 tests** including all 53 original tests. The mathematical
 engine, contracts, original tests and frozen oracle retain their protected
 hashes; the independent **17-case NumPy oracle passes**.
 

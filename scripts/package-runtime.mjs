@@ -11,7 +11,7 @@ await new Promise(resolve=>server.close(resolve));
 const manifest=JSON.parse(await readFile(path.join(root,'_site/staging-manifest.json')));
 const names=[
   ...manifest.files.map(f=>'_site/'+f.path),'_site/staging-manifest.json',
-  'scripts/serve.mjs','scripts/start-windows.ps1','scripts/stop-windows.ps1',
+  'scripts/serve.mjs','scripts/start-windows.ps1','scripts/stop-windows.ps1','scripts/windows-common.ps1',
   'Start DataSense.cmd','Stop DataSense.cmd','START_HERE.md','THIRD_PARTY_NOTICES.md','docs/DEPLOYMENT.md'
 ];
 const contents=[];

@@ -1,6 +1,11 @@
 param([switch]$NoBrowser)
 $ErrorActionPreference = 'Stop'
 $appRoot = Split-Path -Parent $PSScriptRoot
+. (Join-Path $PSScriptRoot 'windows-common.ps1')
+$mutex = Enter-DataSenseMutex $appRoot
+$process = $null
+$recorded = $false
+try {
 $siteRoot = Join-Path $appRoot '_site'
 $runtimeRoot = Join-Path $appRoot '.runtime'
 $stateFile = Join-Path $runtimeRoot 'server.json'
@@ -46,14 +51,22 @@ if (-not $ready -or $ready.status -ne 'ready') {
     Stop-Process -Id $process.Id -ErrorAction SilentlyContinue
     throw 'DataSense did not become ready. Read .runtime/server-errors.txt.'
 }
-@{
+Write-DataSenseState $stateFile @{
     pid = $process.Id
     started = $process.StartTime.ToUniversalTime().ToString('o')
     url = $ready.url
     executable = $nodeFile
     serverFile = $serverFile
     manifestHash = $manifestHash
-} | ConvertTo-Json | Set-Content -LiteralPath $stateFile -Encoding UTF8
+}
+$recorded = $true
 if (-not $NoBrowser) { Start-Process $ready.url }
 Write-Output "DataSense is ready: $($ready.url)"
 Write-Output 'Use Stop DataSense when finished. Your CSV stays in the browser tab.'
+} catch {
+    if ($process -and -not $recorded) {
+        $process.Refresh()
+        if (-not $process.HasExited) { Stop-Process -Id $process.Id -ErrorAction SilentlyContinue }
+    }
+    throw
+} finally { $mutex.ReleaseMutex(); $mutex.Dispose() }

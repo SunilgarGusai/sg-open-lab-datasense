@@ -92,3 +92,21 @@ test('runtime refuses linked assets and requires an explicit origin for external
   catch(e){if(e.code==='EPERM')return t.skip('symlink unavailable');throw e;}
   await assert.rejects(startServer({root,port:0}),/regular|link/i);
 });
+
+test('runtime accepts explicit default HTTPS port for a configured proxy origin',async t=>{
+  const {port}=await running(t,{origin:'https://stats.example.org'});
+  for(const host of ['stats.example.org','stats.example.org:443'])
+    assert.equal((await fetchRaw(port,'/',{headers:{Host:host}})).status,200,host);
+  assert.equal((await fetchRaw(port,'/',{headers:{Host:'stats.example.org:444'}})).status,421);
+});
+test('runtime accepts an omitted default HTTP port',async t=>{
+  let instance;
+  try {instance=await running(t,{port:80});}
+  catch(e){if(['EADDRINUSE','EACCES'].includes(e.code))return t.skip('Port 80 is unavailable on this runner');throw e;}
+  assert.equal((await fetchRaw(instance.port,'/',{headers:{Host:'127.0.0.1'}})).status,200);
+});
+test('external binding requires direct TLS, not an HTTPS label over plaintext',async t=>{
+  const root=await fixture(t);const {startServer}=await api();
+  await assert.rejects(startServer({root,host:'0.0.0.0',port:0,origin:'https://stats.example.org'})
+    .then(server=>{server.close();throw new Error('Plaintext binding was allowed');}),/TLS certificate/);
+});

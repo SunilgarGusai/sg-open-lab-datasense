@@ -4,7 +4,7 @@ Current internal alpha: **0.4.1-alpha.1** (DS-14).
 
 - Ready-to-run packaging, local launcher and an integrity-checking HTTP/TLS server are implemented.
 - DS13-S01/S02/S03 are fixed with seven additional CSV regression tests.
-- Local validation: 81 Node tests, 17 NumPy cases and all ten protected baseline hashes pass.
+- Local validation: 84 Node tests, 17 NumPy cases and all ten protected baseline hashes pass.
 - Excel's installed Windows version imported all 12 tested text-prefix cases without formulas.
 - Runtime and site remain static, with no upload API or runtime package dependencies.
 - Final release evidence and unresolved external gates: [DS-14 readiness](RELEASE_READINESS_DS14.md).

@@ -1,5 +1,8 @@
 $ErrorActionPreference = 'Stop'
 $appRoot = Split-Path -Parent $PSScriptRoot
+. (Join-Path $PSScriptRoot 'windows-common.ps1')
+$mutex = Enter-DataSenseMutex $appRoot
+try {
 $stateFile = Join-Path $appRoot '.runtime\server.json'
 if (-not (Test-Path -LiteralPath $stateFile)) { Write-Output 'DataSense is already stopped.'; exit 0 }
 $saved = Get-Content -LiteralPath $stateFile -Raw | ConvertFrom-Json
@@ -13,3 +16,4 @@ if ($process -and $process.StartTime.ToUniversalTime().ToString('o') -eq $saved.
 }
 Remove-Item -LiteralPath $stateFile
 Write-Output 'DataSense stopped.'
+} finally { $mutex.ReleaseMutex(); $mutex.Dispose() }

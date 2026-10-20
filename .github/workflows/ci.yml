@@ -8,6 +8,35 @@ concurrency:
   group: alpha-ci-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
 jobs:
+  windows-launcher:
+    runs-on: windows-2025
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.19.0'
+          cache: npm
+      - name: Build the locked runtime
+        shell: pwsh
+        run: |
+          npm ci --ignore-scripts --no-fund
+          if ($LASTEXITCODE -ne 0) { throw 'Install failed' }
+          npm run package:runtime
+          if ($LASTEXITCODE -ne 0) { throw 'Build failed' }
+      - name: Exercise Windows start, concurrent start, reuse, recovery and stop
+        shell: pwsh
+        run: ./scripts/test-windows-launcher.ps1
+      - name: Preserve Windows lifecycle evidence
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: alpha-windows-launcher-${{ github.sha }}
+          path: evidence/windows-launcher/
+          if-no-files-found: warn
+          retention-days: 14
   validate:
     runs-on: ubuntu-24.04
     timeout-minutes: 30
