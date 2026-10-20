@@ -1,6 +1,6 @@
 # Security policy (non-public development phase)
 
-This is a local development handoff, not a deployed service. Do not submit real personal datasets in issue reports. Use synthetic examples. Security reports should initially be shared privately with the maintainer. A public vulnerability contact policy will be established before release.
+This is an alpha browser application with local and public Pages deployment paths. CSV data is processed in the browser; there is no upload API. Do not submit real personal datasets in issue reports. Use synthetic examples. Share security reports privately with the maintainer. A formal public vulnerability contact policy remains a release gate.
 
 ## v0.4 downloadable-result handling
 

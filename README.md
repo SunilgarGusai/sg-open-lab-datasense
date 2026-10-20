@@ -93,14 +93,17 @@ docs/                 method specifications, export policy, validation reports
 
 ## Release scope
 
-The dedicated [source repository](https://github.com/SunilgarGusai/sg-open-lab-datasense)
-remains private. Existing research repositories and the original v0.4.0 archive
-were preserved. GitHub Pages remains gated by the current account plan; the
-manual deployment workflow is disabled by default.
+The owner authorized making the dedicated
+[source repository](https://github.com/SunilgarGusai/sg-open-lab-datasense) public
+and enabling a [GitHub Pages alpha preview](https://sunilgargusai.github.io/sg-open-lab-datasense/)
+on 2026-10-20. Existing research repositories and the original v0.4.0 archive
+were preserved. The manual deployment workflow validates the built artifact,
+deploys it, then verifies every HTTPS file and runs three-engine browser checks.
+Consult its latest completed run for deployment status.
 
 This is a usable internal alpha and deployment package. Public beta is not
-announced. An approved external hosting destination, actual public HTTPS
-acceptance, current WebKit/real Safari, real assistive technology/device checks,
+announced. Actual public HTTPS acceptance is recorded by the Pages workflow.
+Current WebKit/real Safari, real assistive technology/device checks,
 an independent pilot and owner decisions about licensing/branding remain
 outside the local acceptance claim. See [third-party inventory](THIRD_PARTY_NOTICES.md)
 and [release gates](docs/RELEASE_READINESS_DS14.md).

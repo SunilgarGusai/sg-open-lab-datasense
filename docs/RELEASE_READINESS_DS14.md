@@ -98,3 +98,19 @@ contains final 84-test and lifecycle logs and the newer exact-commit CI result.
 Local use and deployment preparation are delivered independently of those
 external decisions. See [Start here](../START_HERE.md),
 [deployment guide](DEPLOYMENT.md) and [third-party inventory](../THIRD_PARTY_NOTICES.md).
+
+## Authorized public preview follow-up
+
+On 2026-10-20 the owner explicitly authorized making the dedicated DataSense
+repository public to use GitHub Pages. This supersedes the private-hosting
+decision above for this repository only. The preview remains alpha; no public
+beta or general distribution licence is declared.
+
+The manual Pages workflow now checks all 19 files at the actual HTTPS URL
+against its exact commit, then exercises Chromium, Firefox and WebKit against
+that origin. A completed workflow and its retained public-origin evidence,
+not this prepared configuration, establish deployment acceptance. Historical
+local records remain unchanged. The hosted Linux Node run at `2278890` passed
+83 tests and skipped the default HTTP port test because port 80 was unavailable;
+all 84 passed locally, including that test. Windows lifecycle checks passed
+both locally and in hosted CI.

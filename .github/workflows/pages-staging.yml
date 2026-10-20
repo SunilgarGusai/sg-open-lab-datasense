@@ -1,8 +1,7 @@
 name: Guarded alpha Pages staging
 
-# Preparing this workflow does not enable Pages. A maintainer may enable the
-# repository variable only after visibility, licensing and release gates clear.
-# Private source repositories can publish publicly readable Pages sites.
+# The owner authorized public source and a Pages alpha preview on 2026-10-20.
+# Publication is manual and guarded; it does not clear public-beta release gates.
 on:
   workflow_dispatch:
 
@@ -102,6 +101,8 @@ jobs:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
+    outputs:
+      page_url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - name: Read existing Pages configuration without enabling it
         uses: actions/configure-pages@983d7736d9b0ae728b81ab479565c72886d7745b # v5
@@ -110,3 +111,49 @@ jobs:
       - name: Deploy the same validated artifact
         id: deployment
         uses: actions/deploy-pages@d6db90164ac5ed86f2b6aed7e0febac5b3c0c03e # v4
+
+  verify-deployed-origin:
+    needs: deploy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    defaults:
+      run:
+        shell: bash
+    env:
+      DATASENSE_DEPLOYED_URL: ${{ needs.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.19.0'
+          cache: npm
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12.15'
+      - name: Rebuild the locked reference and install pinned browser tools
+        run: |
+          npm ci --ignore-scripts --no-fund
+          npm run build
+          node scripts/stage-site.mjs
+          python -m pip install --disable-pip-version-check --require-hashes -r requirements-ci.txt
+          python -m playwright install --with-deps chromium firefox webkit
+      - name: Verify every public HTTPS byte and record actual headers
+        run: node scripts/verify-deployment.mjs "$DATASENSE_DEPLOYED_URL" evidence/deployed-https/bytes-and-headers.json
+      - name: Exercise the actual public origin in three engines
+        run: |
+          browser_failures=0
+          for browser in chromium firefox webkit; do
+            mkdir -p "evidence/deployed-https/browser-${browser}"
+            python scripts/real_origin_smoke.py --browser "$browser" --site-root _site --url "$DATASENSE_DEPLOYED_URL" --axe node_modules/axe-core/axe.min.js --output "evidence/deployed-https/browser-${browser}" 2>&1 | tee "evidence/deployed-https/browser-${browser}/run.log" || browser_failures=1
+          done
+          exit "$browser_failures"
+      - name: Preserve actual HTTPS acceptance evidence
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: pages-public-origin-evidence-${{ github.sha }}
+          path: evidence/deployed-https/
+          if-no-files-found: warn
+          retention-days: 14

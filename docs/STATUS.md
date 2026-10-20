@@ -9,4 +9,4 @@ Current internal alpha: **0.4.1-alpha.1** (DS-14).
 - Runtime and site remain static, with no upload API or runtime package dependencies.
 - Final release evidence and unresolved external gates: [DS-14 readiness](RELEASE_READINESS_DS14.md).
 - [DS-13](RELEASE_READINESS_DS13.md) and earlier reports are historical records of their own commits.
-- Source repository remains private. Public beta and a public website are not announced.
+- The owner authorized public source and a GitHub Pages alpha preview on 2026-10-20. Deployment status is established by the manual Pages workflow, including its post-deployment HTTPS checks. Public beta remains unapproved.

@@ -75,8 +75,14 @@ Test the actual response, not only a configuration file.
 
 The existing manual GitHub Pages workflow is guarded by
 `DATASENSE_PAGES_ENABLED=true` and the dedicated repository's main branch.
-The private repository's current plan does not provide Pages. Keep it private;
-choose approved eligible hosting before enabling that gate.
+The owner authorized public visibility for this dedicated repository and a
+Pages alpha preview on 2026-10-20. Set Pages source to GitHub Actions, enable
+that variable, then manually run **Guarded alpha Pages staging** on `main`.
+The workflow checks every deployed HTTPS file against the exact commit and
+runs Chromium, Firefox and WebKit checks against the actual Pages URL.
+Inspect all jobs before accepting a deployment. GitHub Pages does not apply
+the Node server's custom response headers; actual headers are retained in
+the public-origin evidence. There is no authentication gate on this preview.
 [GitHub's plan requirements](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages)
 and site visibility are distinct from source visibility.
 
