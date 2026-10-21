@@ -10,3 +10,5 @@ __pycache__/
 _runtime/
 *.key
 *.pem
+_pilot/
+_pilot_participant/
