@@ -8,7 +8,7 @@ function Enter-DataSenseMutex([string]$Root) {
     } finally { $hasher.Dispose() }
     $mutex = New-Object Threading.Mutex($false, $name)
     try {
-        try { $entered = $mutex.WaitOne(15000) }
+        try { $entered = $mutex.WaitOne(30000) }
         catch [Threading.AbandonedMutexException] { $entered = $true }
         if (-not $entered) { throw 'Another DataSense start/stop operation is still running. Try again shortly.' }
         return $mutex
