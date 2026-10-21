@@ -79,6 +79,8 @@ jobs:
         run: node scripts/package-runtime.mjs
       - name: Package exact-commit independent pilot kit
         run: node scripts/package-pilot.mjs
+      - name: Verify blinded distribution and SHA-256 manifests
+        run: node scripts/verify-pilot-kits.mjs
       - name: Verify direct TLS and certificate rejection
         run: |
           openssl req -x509 -newkey rsa:2048 -nodes -keyout "$RUNNER_TEMP/test.key" -out "$RUNNER_TEMP/test.pem" -days 1 -subj '/CN=localhost' -addext 'subjectAltName=DNS:localhost,IP:127.0.0.1'
