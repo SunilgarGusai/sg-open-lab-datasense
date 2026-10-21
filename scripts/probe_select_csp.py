@@ -261,7 +261,7 @@ window.replaceOptions = () => {
                     if case['name'] == 'datasense-unmodified':
                         actual_html = (args.site_root / 'index.html').read_text(encoding='utf-8')
                         match = re.search(
-                            r'<meta\\s+http-equiv="Content-Security-Policy"\\s+content="([^"]+)"',
+                            r'<meta\s+http-equiv="Content-Security-Policy"\s+content="([^"]+)"',
                             actual_html, re.I)
                         expected_csp = match.group(1) if match else ''
                         check(f"{case['name']}-same-origin-worker-policy",
