@@ -455,6 +455,30 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
         page.locator("#explanation-select").select_option("mean")
         return {"count": len(checked), "examples": checked}
 
+    def worker_cancel():
+        # This check is intentionally bounded to the 1280px/root scenario per engine.
+        # Cancellation invalidates the request ID and terminates the running worker.
+        if width != 1280 or label != "root":
+            return {"skipped": "covered in root 1280px scenario"}
+        data = ("measurement," + ",".join(f"c{i}" for i in range(1, 49)) +
+                "\\n" + ("1," + ",".join("2" for _ in range(48)) + "\\n") * 17000).encode("utf-8")
+        require(len(data) < 5 * 1024 * 1024, "Cancellation fixture exceeds import limit")
+        page.locator("#csv-file").set_input_files(
+            {"name":"ds17-cancel.csv","mimeType":"text/csv","buffer":data})
+        cancel = page.locator("#cancel-analysis")
+        expect(cancel).to_be_visible()
+        cancel.click()
+        expect(page.locator("#status")).to_contain_text("Analysis canceled")
+        expect(page.locator("#results")).to_be_hidden()
+        expect(page.locator("#export-controls")).to_be_hidden()
+        # A previous worker result must not restore stale data after cancellation.
+        page.wait_for_timeout(250)
+        expect(page.locator("#results")).to_be_hidden()
+        page.locator("#sample-scores").click()
+        expect(page.locator("#quality")).to_contain_text("Valid: 10")
+        expect(page.locator("#cancel-analysis")).to_be_hidden()
+        return {"canceled_bytes":len(data), "recovered_sample":True}
+
     def hostile_import():
         header = '<img src=x onerror="window.__ds13Xss=1">'
         cell = '<svg onload="window.__ds13Xss=2"></svg><script>window.__ds13Xss=3</script>'
@@ -553,6 +577,7 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
             phase[0] = "downloads"
             checks.run("eight-saved-downloads-and-manifest-sha256", lambda: save_exports(page, folder))
         phase[0] = "application"
+        checks.run("cancel-worker-clears-stale-results-and-recovers", worker_cancel)
         checks.run("untrusted-headers-and-cells", hostile_import)
         checks.run("nonnumeric-file", nonnumeric_import)
         checks.run("malformed-file-and-identical-file-retry", malformed_retry)
