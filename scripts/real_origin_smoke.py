@@ -461,7 +461,7 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
         if width != 1280 or label != "root":
             return {"skipped": "covered in root 1280px scenario"}
         data = ("measurement," + ",".join(f"c{i}" for i in range(1, 49)) +
-                "\\n" + ("1," + ",".join("2" for _ in range(48)) + "\\n") * 17000).encode("utf-8")
+                "\n" + ("1," + ",".join("2" for _ in range(48)) + "\n") * 17000).encode("utf-8")
         require(len(data) < 5 * 1024 * 1024, "Cancellation fixture exceeds import limit")
         page.locator("#csv-file").set_input_files(
             {"name":"ds17-cancel.csv","mimeType":"text/csv","buffer":data})
