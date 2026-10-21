@@ -52,7 +52,7 @@ export function explainStatistic(
       steps.push('Lower sorted position j = ' + j + '; interpolation fraction g = ' + display(g) + '.');
       steps.push('Adjacent values: x[' + (j + 1) + '] = ' + display(low) +
         ' and x[' + (Math.min(j + 1, n - 1) + 1) + '] = ' + display(high) + ' (positions shown one-based).');
-      steps.push('Interpolate: lower + g × (upper - lower).');
+      steps.push('Interpolate: ' + display(low) + ' + ' + display(g) + ' × (' + display(high) + ' - ' + display(low) + ') = ' + display(result) + ' (reported).');
     } else steps.push('No quantile exists for an empty valid dataset.');
     return { title, formula: 'Type-7 quantile: h = (n - 1)p, j = floor(h), g = h - j; Q(p) = x[j] + g(x[j + 1] - x[j]), using zero-based indexing.',
       steps, conclusion: 'Reported ' + title.toLowerCase() + ': ' + display(result) + '.', note };
@@ -65,6 +65,10 @@ export function explainStatistic(
       'Mean from the validated engine = ' + display(summary.mean) + '.',
       'For each valid observation, consider its squared deviation (xᵢ - mean)².',
       'Divisor = ' + (sample ? 'n - 1 = ' : 'n = ') + divisor + '.',
+      ...(n > 0 && n <= 12 && summary.mean !== null
+        ? ['Illustrative squared deviations: ' + values.map(value =>
+            display((value - summary.mean!) ** 2)).join(', ') + '.']
+        : []),
       result === null ? 'The selected variance is undefined or numerically unavailable.' :
         'The offset-stabilized Welford algorithm evaluates the variance without relying on naive large-number subtraction.'];
     return {
