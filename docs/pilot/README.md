@@ -16,6 +16,8 @@ The test uses **only supplied synthetic data**. No institutional or private data
 
 The maintainer selects the fully green **DS-18** GitHub Actions run and downloads its **`datasense-ds18-pilot-<commit>`** artifact. Unzip the artifact into a new directory. It includes `APP/` (the tested alpha runtime), `PILOT/` (instructions/fixtures/template), and a manifest recording the exact commit and SHA-256 file hashes.
 
+**IMPORTANT — BLINDED DISTRIBUTION:** The `datasense-ds18-pilot-<commit>` package is **facilitator only**, because this README contains expected answers. **Never send that entire ZIP to testers.** Download the separate `datasense-ds18-participant-<commit>` artifact, which contains `APP/`, `TASKS/README.md` (instructions without answers), and `TASKS/fixtures/`. The facilitator keeps the separate answer key and `feedback-template.csv` outside the tester package. Verify that both artifact manifests name the *same* commit.
+
 Only use the same artifact/commit for the complete pilot. Do not send users the public GitHub Pages link as a substitute until that host is proven to serve the *same commit*. The current `main` Pages alpha predates the worker/teaching candidate.
 
 On Windows, with Node.js 22+ installed, double-click `APP/Start DataSense.cmd` and keep the loopback origin `http://127.0.0.1:...` (or the launcher-provided URL). Verify the `APP/Stop DataSense.cmd` flow afterward. Other desktops may run `node scripts/serve.mjs` from inside `APP` after inspecting its options. The application does not upload CSV data.
@@ -25,7 +27,7 @@ On Windows, with Node.js 22+ installed, double-click `APP/Start DataSense.cmd` a
 ## Facilitator script (independent first attempt)
 
 1. Record a **random participant code**. Explain that the testing is voluntary and that only synthetic data may be used.
-2. Give the person the candidate link/package and this task document. Do not coach on controls before recording the independent attempt.
+2. Give the person **only the blinded participant package and its TASKS/README.md**, never this facilitator README. Do not coach on controls before recording the independent attempt.
 3. For each task T01–T05, record completed yes/no, independent yes/no, answer_correct yes/no, approximate seconds, optional clarity rating (1–5), issue severity and sanitized short note in `feedback-template.csv`. Use one row per participant/task. T06–T07 are exploratory and may be omitted.
 4. If a tester needs help, record `independent=no` even if the task subsequently finishes. Measure completion as observed, not guessed.
 5. Ask: "What result did you expect? What did the tool show? What did you find confusing?" Do not imply the intended answer in advance.
