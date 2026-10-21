@@ -77,6 +77,8 @@ jobs:
         run: node scripts/stage-site.mjs 2>&1 | tee evidence/ci/site-package.log
       - name: Package the ready-to-run alpha
         run: node scripts/package-runtime.mjs
+      - name: Package exact-commit independent pilot kit
+        run: node scripts/package-pilot.mjs
       - name: Verify direct TLS and certificate rejection
         run: |
           openssl req -x509 -newkey rsa:2048 -nodes -keyout "$RUNNER_TEMP/test.key" -out "$RUNNER_TEMP/test.pem" -days 1 -subj '/CN=localhost' -addext 'subjectAltName=DNS:localhost,IP:127.0.0.1'
@@ -112,6 +114,13 @@ jobs:
         with:
           name: alpha-staging-site-${{ github.sha }}
           path: _site/
+          if-no-files-found: error
+          retention-days: 14
+      - name: Preserve isolated DS-18 tester kit
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: datasense-ds18-pilot-${{ github.sha }}
+          path: _pilot/
           if-no-files-found: error
           retention-days: 14
       - name: Preserve ready-to-run alpha
