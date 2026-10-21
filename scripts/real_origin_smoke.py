@@ -598,14 +598,25 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
                           and origin(item["url"]) != origin(url)]
             after_load = [item for item in requests if item["phase"] != "navigation"
                           and urlsplit(item["url"]).scheme in ("http", "https")]
+            # Web Workers legitimately load same-origin, immutable JavaScript modules on first use.
+            # Never allow POST, cross-origin access, arbitrary URLs or uploaded CSV content.
+            base_path = urlsplit(url).path
+            if not base_path.endswith("/"):
+                base_path = base_path.rsplit("/", 1)[0] + "/"
+            worker_scripts = [item for item in after_load if
+                              urlsplit(item["url"]).path.startswith(base_path + "dist/") and
+                              urlsplit(item["url"]).path.endswith(".js") and
+                              item["method"] == "GET"]
+            unexpected = [item for item in after_load if item not in worker_scripts]
             non_get = [item for item in requests if item["method"] != "GET"]
             http_errors = [item for item in responses if item["status"] >= 400]
             require(not off_origin, f"Outgoing cross-origin requests: {off_origin}")
-            require(not after_load, f"Unexpected HTTP(S) requests after load: {after_load}")
+            require(not unexpected, f"Unexpected HTTP(S) after page load: {unexpected}")
             require(not non_get and not failed_requests and not http_errors,
                     f"Network failures: non_get={non_get}, failed={failed_requests}, HTTP={http_errors}")
             return {"request_count": len(requests), "cross_origin_requests": off_origin,
-                    "http_requests_after_load": after_load, "observation_end": utc_now()}
+                    "permitted_worker_module_requests": worker_scripts,
+                    "unexpected_http_requests_after_load": unexpected, "observation_end": utc_now()}
 
         expected_csp_console = [item for item in console if item["phase"] == "csp-negative-test"
                                 and re.search(r"content.security.policy|script-src", item["text"], re.I)
