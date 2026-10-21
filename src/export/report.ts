@@ -30,7 +30,7 @@ export function serializeCsv(rows: readonly (readonly (string | number | null)[]
   return rows.map(row=>row.map(csvCell).join(',')).join('\r\n')+'\r\n';
 }
 
-export function summaryCsv(summary: NumericSummary, column: NumericColumn, ctx: ExportContext): string {
+export function summaryCsv(summary: NumericSummary, column: Pick<NumericColumn, 'totalRows' | 'validCount' | 'missingCount' | 'invalidCount'>, ctx: ExportContext): string {
   const values: [string, number | string | null][] = [
     ['dataset',ctx.sourceName], ['column',ctx.columnName], ['source_sha256',ctx.sourceSha256 ?? 'unavailable'],
     ['total_rows',column.totalRows],['valid_rows',column.validCount],['missing_rows',column.missingCount],
