@@ -243,8 +243,8 @@ async function sample(source:string,title:string):Promise<void> {
   await loadBytes(bytes.buffer,title);
 }
 const SAMPLES={
-  scores:'score,group\\n12,A\\n15,A\\n18,B\\n18,B\\n21,A\\n24,B\\n27,B\\n30,A\\n33,A\\n36,B\\n',
-  missing:'score,name\\n4,Alice\\nNA,Bob\\n8,Carol\\n,David\\ninvalid,Eve\\n12,Farah\\n-,Gopal\\n'
+  scores:'score,group\n12,A\n15,A\n18,B\n18,B\n21,A\n24,B\n27,B\n30,A\n33,A\n36,B\n',
+  missing:'score,name\n4,Alice\nNA,Bob\n8,Carol\n,David\ninvalid,Eve\n12,Farah\n-,Gopal\n'
 };
 byId('sample-scores').addEventListener('click',()=>{void sample(SAMPLES.scores,'Synthetic sample scores');});
 byId('sample-ties').addEventListener('click',()=>{void sample(SAMPLES.missing,'Synthetic missing-value example');});
