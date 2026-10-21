@@ -1,0 +1,9 @@
+temperature_c,humidity_pct,session
+-2.5,45,A
+-1,49,A
+0,50,B
+0.5,51,B
+1.25,53,A
+2,55,B
+3,60,A
+3.5,62,B
