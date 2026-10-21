@@ -1,0 +1,8 @@
+score,section,score
+4,A,10
+NA,B,20
+8,A,30
+,B,40
+invalid,A,50
+12,B,60
+-,A,70
