@@ -455,6 +455,30 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
         page.locator("#explanation-select").select_option("mean")
         return {"count": len(checked), "examples": checked}
 
+    def worker_cancel():
+        # This check is intentionally bounded to the 1280px/root scenario per engine.
+        # Cancellation invalidates the request ID and terminates the running worker.
+        if width != 1280 or label != "root":
+            return {"skipped": "covered in root 1280px scenario"}
+        data = ("measurement," + ",".join(f"c{i}" for i in range(1, 49)) +
+                "\n" + ("1," + ",".join("2" for _ in range(48)) + "\n") * 17000).encode("utf-8")
+        require(len(data) < 5 * 1024 * 1024, "Cancellation fixture exceeds import limit")
+        page.locator("#csv-file").set_input_files(
+            {"name":"ds17-cancel.csv","mimeType":"text/csv","buffer":data})
+        cancel = page.locator("#cancel-analysis")
+        expect(cancel).to_be_visible()
+        cancel.click()
+        expect(page.locator("#status")).to_contain_text("Analysis canceled")
+        expect(page.locator("#results")).to_be_hidden()
+        expect(page.locator("#export-controls")).to_be_hidden()
+        # A previous worker result must not restore stale data after cancellation.
+        page.wait_for_timeout(250)
+        expect(page.locator("#results")).to_be_hidden()
+        page.locator("#sample-scores").click()
+        expect(page.locator("#quality")).to_contain_text("Valid: 10")
+        expect(page.locator("#cancel-analysis")).to_be_hidden()
+        return {"canceled_bytes":len(data), "recovered_sample":True}
+
     def hostile_import():
         header = '<img src=x onerror="window.__ds13Xss=1">'
         cell = '<svg onload="window.__ds13Xss=2"></svg><script>window.__ds13Xss=3</script>'
@@ -553,6 +577,7 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
             phase[0] = "downloads"
             checks.run("eight-saved-downloads-and-manifest-sha256", lambda: save_exports(page, folder))
         phase[0] = "application"
+        checks.run("cancel-worker-clears-stale-results-and-recovers", worker_cancel)
         checks.run("untrusted-headers-and-cells", hostile_import)
         checks.run("nonnumeric-file", nonnumeric_import)
         checks.run("malformed-file-and-identical-file-retry", malformed_retry)
@@ -573,14 +598,25 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
                           and origin(item["url"]) != origin(url)]
             after_load = [item for item in requests if item["phase"] != "navigation"
                           and urlsplit(item["url"]).scheme in ("http", "https")]
+            # Web Workers legitimately load same-origin, immutable JavaScript modules on first use.
+            # Never allow POST, cross-origin access, arbitrary URLs or uploaded CSV content.
+            base_path = urlsplit(url).path
+            if not base_path.endswith("/"):
+                base_path = base_path.rsplit("/", 1)[0] + "/"
+            worker_scripts = [item for item in after_load if
+                              urlsplit(item["url"]).path.startswith(base_path + "dist/") and
+                              urlsplit(item["url"]).path.endswith(".js") and
+                              item["method"] == "GET"]
+            unexpected = [item for item in after_load if item not in worker_scripts]
             non_get = [item for item in requests if item["method"] != "GET"]
             http_errors = [item for item in responses if item["status"] >= 400]
             require(not off_origin, f"Outgoing cross-origin requests: {off_origin}")
-            require(not after_load, f"Unexpected HTTP(S) requests after load: {after_load}")
+            require(not unexpected, f"Unexpected HTTP(S) after page load: {unexpected}")
             require(not non_get and not failed_requests and not http_errors,
                     f"Network failures: non_get={non_get}, failed={failed_requests}, HTTP={http_errors}")
             return {"request_count": len(requests), "cross_origin_requests": off_origin,
-                    "http_requests_after_load": after_load, "observation_end": utc_now()}
+                    "permitted_worker_module_requests": worker_scripts,
+                    "unexpected_http_requests_after_load": unexpected, "observation_end": utc_now()}
 
         expected_csp_console = [item for item in console if item["phase"] == "csp-negative-test"
                                 and re.search(r"content.security.policy|script-src", item["text"], re.I)

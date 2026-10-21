@@ -1,12 +1,10 @@
-/** Browser application: text-only insertion for untrusted content and on-device computation. */
-import { parseCsvText, parseCsvBytes, profileCsvColumns, getColumnById, CsvImportError,
-  CSV_LIMITS, summarize, buildFrequency, sturgesBinCount, makeOgive, makeBoxPlot } from '../index.js';
-import { summaryCsv,frequencyCsv,ogiveCsv,boxplotCsv,analysisManifest,manifestJson,safeBaseName } from '../export/report.js';
+/** Browser interface: controls, accessible rendering and explicitly requested downloads. */
+import { CSV_LIMITS } from '../index.js';
+import { summaryCsv,frequencyCsv,ogiveCsv,boxplotCsv,manifestJson,safeBaseName } from '../export/report.js';
 import { histogramSvg,ogiveSvg,boxplotSvg } from './charts.js';
-import type { CsvDataset,CsvColumnProfile } from '../index.js';
 import type { ExportContext } from '../export/report.js';
-import { explainStatistic } from '../education/explain.js';
-import type { ExplanationMetric } from '../education/explain.js';
+import type { CalculationExplanation,ExplanationMetric } from '../education/explain.js';
+import type { AnalysisResult,WorkerOutput,WorkerInput } from './worker-protocol.js';
 
 const VERSION='0.4.1-alpha.1';
 function byId<T extends HTMLElement>(id:string):T {
@@ -22,13 +20,34 @@ const explanationSelect=byId<HTMLSelectElement>('explanation-select');
 const workedExample=byId<HTMLElement>('worked-example');
 const exportControls=byId<HTMLDivElement>('export-controls');
 const workspace=byId<HTMLElement>('workspace');
-function setBusy(busy:boolean):void { workspace.setAttribute('aria-busy',String(busy)); }
-let dataset:CsvDataset|null=null;
-let datasetTitle='';
-let sourceHash:string|null=null;
+const cancelButton=byId<HTMLButtonElement>('cancel-analysis');
+const workerUrl=new URL('./analysis-worker.js',import.meta.url);
+let worker:Worker;
+let busy=false;
 let generation=0;
-let report: ReturnType<typeof analysisManifest>|null=null;
-let explanationState:{values:readonly number[];summary:ReturnType<typeof summarize>;frequency:ReturnType<typeof buildFrequency>}|null=null;
+let datasetTitle='';
+let activeAnalysis:AnalysisResult|null=null;
+let report:AnalysisResult['manifest']=null;
+let explanationState:AnalysisResult['explanations']|null=null;
+function setBusy(value:boolean):void {
+  busy=value;
+  workspace.setAttribute('aria-busy',String(value));
+  cancelButton.classList.toggle('hidden',!value);
+  select.disabled=value;binSelect.disabled=value;
+}
+function newWorker():Worker {
+  const next=new Worker(workerUrl,{type:'module',name:'datasense-analysis'});
+  next.onmessage=(event:MessageEvent<WorkerOutput>)=>receive(event.data);
+  next.onerror=()=>{
+    resetWorker();
+    errorState('WORKER_FAILURE: The analysis worker stopped unexpectedly. Please try again.');
+  };
+  return next;
+}
+function resetWorker():void{
+  if(worker) worker.terminate();
+  worker=newWorker();
+}
 
 function setStatus(message:string,error=false):void {
   status.textContent=message;status.classList.toggle('error',error);
@@ -55,9 +74,8 @@ function clear(target:string):HTMLElement {
   const root=byId<HTMLElement>(target);root.replaceChildren();return root;
 }
 function renderExplanation():void {
-  if(!explanationState){workedExample.classList.add('hidden');clear('explanation-body');return;}
-  const details=explainStatistic(explanationState.values,explanationState.summary,
-    explanationSelect.value as ExplanationMetric,explanationState.frequency);
+  const details=explanationState?.[explanationSelect.value as ExplanationMetric];
+  if(!details){workedExample.classList.add('hidden');clear('explanation-body');return;}
   const container=clear('explanation-body');
   container.append(el('h4',details.title));
   const formula=el('p',details.formula);formula.className='explanation-formula';container.append(formula);
@@ -68,12 +86,12 @@ function renderExplanation():void {
   const note=el('p',details.note);note.className='explanation-note';container.append(note);
   workedExample.classList.remove('hidden');
 }
-function render(profile:CsvColumnProfile):void {
-  if(!dataset)return;
-  const numeric=profile.numeric;
+function render(data:AnalysisResult):void {
+  activeAnalysis=data;
+  const numeric=data.numeric;
   byId('empty-state').classList.add('hidden');
   byId('results').classList.remove('hidden');
-  byId('dataset-meta').textContent=`${datasetTitle} · ${profile.header.display}`;
+  byId('dataset-meta').textContent=`${datasetTitle} · ${data.display}`;
   const quality=clear('quality');
   for(const label of [`Rows: ${numeric.totalRows}`,`Valid: ${numeric.validCount}`,`Missing: ${numeric.missingCount}`,`Invalid: ${numeric.invalidCount}`])
     quality.append(el('span',label));
@@ -86,17 +104,9 @@ function render(profile:CsvColumnProfile):void {
     freqTable.append(el('p','Frequency distributions and chart exports require numeric observations.'));
     return;
   }
-  let dist: ReturnType<typeof buildFrequency>;
-  try{
-    const bins=binSelect.value==='auto'?sturgesBinCount(numeric.validCount):Number(binSelect.value);
-    dist=buildFrequency(numeric.values,bins);
-  }catch(error){
-    setStatus(error instanceof Error?`Cannot group this numeric column: ${error.message}`:'Cannot group this numeric column.',true);
-    statistics.append(el('p','Try fewer bins for numeric values with extremely narrow or large ranges.'));
-    return;
-  }
-  const summary=summarize(numeric.values),ogive=makeOgive(dist),box=makeBoxPlot(numeric.values);
-  explanationState={values:numeric.values,summary,frequency:dist};
+  const {summary,frequency:dist,ogive,boxplot:box}=data;
+  if(!summary||!dist||!box){statistics.append(el('p','Statistics could not be calculated.'));return;}
+  explanationState=data.explanations;
   renderExplanation();
   const metrics:readonly [string,number|null|undefined][]=[
     ['Mean',summary.mean],['Median',summary.median],['Min',summary.min],['Max',summary.max],
@@ -127,70 +137,110 @@ function render(profile:CsvColumnProfile):void {
     ['Outlier observations',String(box.outliers.length)],
     ['Outlier examples',box.outliers.length ? `${box.outliers.slice(0,12).map(fmt).join(', ')}${box.outliers.length>12?' …':''}`:'None']
   ],'Box plot quartiles, fences, whiskers and outliers'));
-  report=analysisManifest({sourceName:datasetTitle,sourceBytes:dataset.byteLength,sourceSha256:sourceHash,
-    columnId:profile.header.id,columnName:profile.header.display,appVersion:VERSION,requestedBins:dist.requestedBins},
-    numeric,summary,dist,ogive,box);
+  report=data.manifest;
   exportControls.classList.remove('hidden');
 }
-function renderPreview(data:CsvDataset):void {
+function renderPreview(headers:readonly string[],rows:readonly (readonly string[])[],totalRows:number):void {
   const preview=clear('preview');
-  preview.append(table(data.headers.map(h=>h.display),data.rows.slice(0,10).map(row=>[...row]),'First ten CSV observations'));
-  if(data.rows.length>10)preview.append(el('p',`Preview shows 10 of ${data.totalRows} rows.`));
+  preview.append(table(headers,rows,'First ten CSV observations'));
+  if(totalRows>10)preview.append(el('p',`Preview shows 10 of ${totalRows} rows.`));
 }
-async function sha256(bytes:Uint8Array):Promise<string|null>{
-  try{
-    if(!crypto?.subtle)return null;
-    const digest=await crypto.subtle.digest('SHA-256',bytes as Uint8Array<ArrayBuffer>);
-    return Array.from(new Uint8Array(digest),x=>x.toString(16).padStart(2,'0')).join('');
-  }catch{return null;}
-}
-async function load(data:CsvDataset,title:string,bytes:Uint8Array,token:number):Promise<void>{
-  const digest=await sha256(bytes);
-  if(token!==generation)return;
-  sourceHash=digest;dataset=data;datasetTitle=title;
-  selector.classList.remove('hidden');clear('warnings');
-  for(const warning of data.warnings)byId('warnings').append(el('p',warning));
-  const columns=profileCsvColumns(data);
-  select.replaceChildren();
-  for(const profile of columns){
-    const option=el('option',`${profile.header.display} (${profile.numeric.validCount} numeric)`);
-    option.value=profile.header.id;select.append(option);
-  }
-  const first=columns.find(p=>p.eligible)??columns[0];
-  if(first)select.value=first.header.id;
-  renderPreview(data);
-  if(first)render(first);
-  setStatus(`Loaded ${title}: ${data.totalRows} rows, ${data.headers.length} columns. Processed locally.${digest?' Source SHA-256 recorded.':' Source hash unavailable.'}`);
-}
-function errorState(error:unknown):void {
-  generation++;dataset=null;datasetTitle='';sourceHash=null;report=null;explanationState=null;renderExplanation();
-  byId<HTMLInputElement>('csv-file').value='';setBusy(false);
+function clearAnalysis():void {
+  activeAnalysis=null;report=null;explanationState=null;renderExplanation();
   selector.classList.add('hidden');exportControls.classList.add('hidden');
-  clear('warnings');byId('results').classList.add('hidden');byId('empty-state').classList.remove('hidden');
+  byId('results').classList.add('hidden');byId('empty-state').classList.remove('hidden');
+  clear('warnings');
+}
+function errorState(message:string):void {
+  ++generation;
+  clearAnalysis();
+  byId<HTMLInputElement>('csv-file').value='';
+  setBusy(false);
   byId('empty-state').textContent='Correct the CSV and try again, or load a built-in sample.';
-  setStatus(error instanceof CsvImportError?`${error.code}: ${error.message}`:'Could not read the file. Use a valid UTF-8 CSV with headers.',true);
+  setStatus(message,true);
+}
+function receive(message:WorkerOutput):void {
+  if(message.id!==generation)return;
+  if(message.type==='progress'){setStatus(message.stage);return;}
+  if(message.type==='error'){
+    errorState(`${message.code}: ${message.message}`);
+    return;
+  }
+  if(message.type==='loaded'){
+    datasetTitle=message.title;
+    selector.classList.remove('hidden');
+    const warnings=clear('warnings');
+    for(const warning of message.warnings)warnings.append(el('p',warning));
+    select.replaceChildren();
+    for(const head of message.headers) {
+      const option=el('option',`${head.display} (${head.validCount} numeric)`);
+      option.value=head.id;select.append(option);
+    }
+    select.value=message.analysis.columnId;
+    renderPreview(message.previewHeaders,message.previewRows,message.totalRows);
+    render(message.analysis);
+    setBusy(false);
+    setStatus(`Loaded ${datasetTitle}: ${message.totalRows} rows, ${message.headers.length} columns. Processed locally.${message.sha256?' Source SHA-256 recorded.':' Source hash unavailable.'}`);
+    return;
+  }
+  if(message.type==='analyzed') {
+    render(message.analysis);
+    setBusy(false);
+    setStatus(`Updated ${datasetTitle}: ${message.analysis.display}. Processed locally.`);
+  }
+}
+function dispatch(message:WorkerInput,bytes?:ArrayBuffer):void {
+  if(bytes)worker.postMessage(message,[bytes]);
+  else worker.postMessage(message);
+}
+function analyzeSelection():void {
+  if(!datasetTitle||busy)return;
+  const id=++generation;
+  setBusy(true);setStatus('Calculating selected column…');
+  dispatch({type:'analyze',id,columnId:select.value,bins:binSelect.value});
+}
+async function loadBytes(bytes:ArrayBuffer,title:string):Promise<void>{
+  resetWorker();
+  const id=++generation;
+  clearAnalysis();
+  setBusy(true);
+  setStatus('Reading local CSV…');
+  dispatch({type:'load',id,title,buffer:bytes,bins:binSelect.value},bytes);
 }
 byId<HTMLInputElement>('csv-file').addEventListener('change',async(event)=>{
   const file=(event.currentTarget as HTMLInputElement).files?.[0];if(!file)return;
+  if(file.size>CSV_LIMITS.maxBytes){
+    resetWorker();
+    errorState('FILE_TOO_LARGE: Maximum CSV size is 5 MiB.');
+    return;
+  }
+  // Cancel the previous worker immediately, including in-flight mathematical work.
+  resetWorker();
   const token=++generation;
-  if(file.size>CSV_LIMITS.maxBytes){errorState(new CsvImportError('FILE_TOO_LARGE','Maximum CSV size is 5 MiB.'));return;}
-  setStatus('Reading and checking local file…');setBusy(true);
-  try{
-    const bytes=new Uint8Array(await file.arrayBuffer());
+  clearAnalysis();
+  setBusy(true);setStatus('Reading local CSV…');
+  try {
+    const bytes=await file.arrayBuffer();
     if(token!==generation)return;
-    await load(parseCsvBytes(bytes),file.name,bytes,token);
-  }catch(error){if(token===generation)errorState(error);}
-  finally{if(token===generation)setBusy(false);}
+    dispatch({type:'load',id:token,title:file.name,buffer:bytes,bins:binSelect.value},bytes);
+  } catch(e) {
+    if(token===generation)errorState('FILE_READ_ERROR: Could not read the file.');
+  }
 });
-select.addEventListener('change',()=>{if(dataset)render(getColumnById(dataset,select.value));});
-binSelect.addEventListener('change',()=>{if(dataset)render(getColumnById(dataset,select.value));});
+select.addEventListener('change',analyzeSelection);
+binSelect.addEventListener('change',analyzeSelection);
 explanationSelect.addEventListener('change',renderExplanation);
-async function sample(source:string,title:string):Promise<void>{
-  byId<HTMLInputElement>('csv-file').value='';const token=++generation;
-  setBusy(true);setStatus('Loading built-in sample…');
-  try{await load(parseCsvText(source),title,new TextEncoder().encode(source),token);}
-  catch(error){if(token===generation)errorState(error);}
-  finally{if(token===generation)setBusy(false);}
+cancelButton.addEventListener('click',()=>{
+  resetWorker();++generation;
+  clearAnalysis();setBusy(false);
+  byId<HTMLInputElement>('csv-file').value='';
+  datasetTitle='';
+  setStatus('Analysis canceled. Choose a sample or CSV to start again.');
+});
+async function sample(source:string,title:string):Promise<void> {
+  byId<HTMLInputElement>('csv-file').value='';
+  const bytes=new TextEncoder().encode(source);
+  await loadBytes(bytes.buffer,title);
 }
 const SAMPLES={
   scores:'score,group\n12,A\n15,A\n18,B\n18,B\n21,A\n24,B\n27,B\n30,A\n33,A\n36,B\n',
@@ -198,6 +248,7 @@ const SAMPLES={
 };
 byId('sample-scores').addEventListener('click',()=>{void sample(SAMPLES.scores,'Synthetic sample scores');});
 byId('sample-ties').addEventListener('click',()=>{void sample(SAMPLES.missing,'Synthetic missing-value example');});
+worker=newWorker();
 
 function download(content:string,mime:string,name:string):void {
   const url=URL.createObjectURL(new Blob([content],{type:mime}));
@@ -207,14 +258,14 @@ function download(content:string,mime:string,name:string):void {
 byId('export-controls').addEventListener('click',(event)=>{
   const target=event.target as HTMLElement;
   const button=target.closest<HTMLButtonElement>('button[data-export]');
-  if(!button||!report||!dataset)return;
+  if(!button||!report||!activeAnalysis)return;
   const data=report;const prefix=`datasense-${safeBaseName(datasetTitle)}-${safeBaseName(data.selection.label)}`;
   const ctx:ExportContext={sourceName:data.source.name,sourceBytes:data.source.bytes,
     sourceSha256:data.source.sha256,columnId:data.selection.id,columnName:data.selection.label,
     appVersion:VERSION,requestedBins:data.frequency.requestedBins};
-  const profile=getColumnById(dataset,select.value);
+  const numeric=activeAnalysis.numeric;
   const kind=button.dataset.export;
-  if(kind==='summary') download(summaryCsv(data.computed.summary,profile.numeric,ctx),'text/csv;charset=utf-8',`${prefix}-summary.csv`);
+  if(kind==='summary') download(summaryCsv(data.computed.summary,numeric,ctx),'text/csv;charset=utf-8',`${prefix}-summary.csv`);
   else if(kind==='frequency') download(frequencyCsv({n:data.dataQuality.valid,requestedBins:data.frequency.requestedBins,
     isConstant:data.frequency.isConstant,binning:'equal-width-left-closed-final-right-closed',bins:data.computed.bins}),
     'text/csv;charset=utf-8',`${prefix}-frequency.csv`);

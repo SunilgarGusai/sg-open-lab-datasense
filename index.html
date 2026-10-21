@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="description" content="DataSense alpha: transparent descriptive statistics from local CSV files." />
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" />
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'" />
   <title>DataSense 0.4.1 Alpha — SG Open Lab</title>
   <link rel="stylesheet" href="./styles.css" />
   <script type="module" src="./dist/app/browser.js"></script>
@@ -26,6 +26,7 @@
         <p class="hint">First row must contain headers. Maximum 50,000 data rows and 100 columns. All file processing takes place in this browser tab.</p>
         <div class="sample-actions"><button id="sample-scores" type="button">Sample scores</button><button id="sample-ties" type="button" class="secondary">Missing values</button></div>
         <div id="status" class="status" role="status" aria-live="polite">Ready to analyze a sample or a CSV file.</div>
+        <button id="cancel-analysis" type="button" class="secondary cancel-analysis hidden">Cancel current analysis</button>
         <div id="warnings" class="warnings" role="note" aria-live="polite"></div>
         <div id="selector" class="hidden">
           <label for="column-select" class="input-label">2. Select numeric column</label>

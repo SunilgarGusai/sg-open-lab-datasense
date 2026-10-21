@@ -257,7 +257,17 @@ window.replaceOptions = () => {
 
                 for case in report['cases']:
                     check(f"{case['name']}-no-page-errors", not case['page_errors'], case['page_errors'])
-                    check(f"{case['name']}-csp-unchanged", case['csp'] == CSP, case['csp'])
+                    expected_csp = CSP
+                    if case['name'] == 'datasense-unmodified':
+                        actual_html = (args.site_root / 'index.html').read_text(encoding='utf-8')
+                        match = re.search(
+                            r'<meta\s+http-equiv="Content-Security-Policy"\s+content="([^"]+)"',
+                            actual_html, re.I)
+                        expected_csp = match.group(1) if match else ''
+                        check(f"{case['name']}-same-origin-worker-policy",
+                              "worker-src 'self'" in expected_csp and "'unsafe-inline'" not in expected_csp,
+                              expected_csp)
+                    check(f"{case['name']}-csp-unchanged", case['csp'] == expected_csp, case['csp'])
                     before_errors = [m for m in case['console'] if m['type'] == 'error' and not m['phase'].startswith('screenshot-')]
                     if not case['intentional_style_violation']:
                         check(f"{case['name']}-clean-before-screenshots", not before_errors, before_errors)
