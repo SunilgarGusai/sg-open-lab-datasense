@@ -123,6 +123,13 @@ jobs:
           path: _pilot/
           if-no-files-found: error
           retention-days: 14
+      - name: Preserve blinded participant pilot kit
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
+        with:
+          name: datasense-ds18-participant-${{ github.sha }}
+          path: _pilot_participant/
+          if-no-files-found: error
+          retention-days: 14
       - name: Preserve ready-to-run alpha
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6.0.0
         with:
