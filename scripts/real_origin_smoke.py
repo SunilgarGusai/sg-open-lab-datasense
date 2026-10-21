@@ -217,7 +217,8 @@ def verify_accessibility(page, expect):
     labels = {}
     for selector, label in (("#csv-file", "Open a CSV file"),
                             ("#column-select", "2. Select numeric column"),
-                            ("#bin-select", "Histogram groups")):
+                            ("#bin-select", "Histogram groups"),
+                            ("#explanation-select", "Choose a statistical measure")):
         expect(page.get_by_label(label, exact=False)).to_have_count(1)
         labels[selector] = page.locator(selector).evaluate(
             "el => Array.from(el.labels || [], x => x.textContent.trim())")
@@ -431,6 +432,29 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
         return {"bins": [5, 10, 15, 20, "auto"], "numeric_column_switch": True,
                 "nonnumeric_column_switch": True, "numeric_recovery": True}
 
+    def educational_calculations():
+        expect(page.locator("#worked-example")).to_be_visible()
+        selections = (
+            ("mean", "23.4"),
+            ("median", "22.5"),
+            ("q1", "18"),
+            ("q3", "29.25"),
+            ("populationVariance", "64.04"),
+            ("sampleVariance", "71.155"),
+            ("frequency", "10 of 10"),
+        )
+        checked = []
+        for metric, _expected in selections:
+            page.locator("#explanation-select").select_option(metric)
+            body = page.locator("#explanation-body")
+            expect(body.locator("ol li")).not_to_have_count(0)
+            expect(body.locator(".explanation-result")).not_to_be_empty()
+            checked.append({"metric": metric, "result": body.locator(".explanation-result").inner_text()})
+        require("23.4" in checked[0]["result"], f"Mean explanation mismatch: {checked[0]}")
+        require("10 of 10" in checked[-1]["result"], f"Grouped frequency mismatch: {checked[-1]}")
+        page.locator("#explanation-select").select_option("mean")
+        return {"count": len(checked), "examples": checked}
+
     def hostile_import():
         header = '<img src=x onerror="window.__ds13Xss=1">'
         cell = '<svg onload="window.__ds13Xss=2"></svg><script>window.__ds13Xss=3</script>'
@@ -520,6 +544,7 @@ def run_scenario(browser, url, label, width, height, output, axe_source, expect)
         checks.run("keyboard-skip-link-and-sample", keyboard)
         if checks.run("synthetic-file-import-and-secure-hash", numeric_import):
             checks.run("labels-table-and-chart-accessible-names", lambda: verify_accessibility(page, expect))
+            checks.run("worked-calculations-match-validated-analysis", educational_calculations)
             checks.run("numeric-column-and-bin-selectors", selections)
             checks.run("scrolling-tables-are-keyboard-accessible", keyboard_tables)
             checks.run("numeric-layout", lambda: snapshot(page, folder, "numeric", capture_screenshots))
