@@ -42,6 +42,21 @@
           <div id="dataset-meta" class="dataset-meta"></div>
           <div id="quality" class="quality" role="group" aria-label="Data quality summary"></div>
           <div id="statistics" class="metrics" role="group" aria-label="Descriptive statistics"></div>
+          <section id="worked-example" class="worked-example hidden" aria-labelledby="worked-title">
+            <h3 id="worked-title">Show the calculation</h3>
+            <p class="hint">Learn how this result is obtained from valid observations. Calculations never leave your browser.</p>
+            <label class="input-label" for="explanation-select">Choose a statistical measure</label>
+            <select id="explanation-select">
+              <option value="mean">Arithmetic mean</option>
+              <option value="median">Median</option>
+              <option value="q1">First quartile (Q1)</option>
+              <option value="q3">Third quartile (Q3)</option>
+              <option value="populationVariance">Population variance</option>
+              <option value="sampleVariance">Sample variance</option>
+              <option value="frequency">Grouped frequency distribution</option>
+            </select>
+            <div id="explanation-body" class="explanation-body"></div>
+          </section>
           <details class="definitions"><summary>Calculation methods and limitations</summary><p>Quantiles are Hyndman–Fan Type 7 (linear interpolation). Population and sample variance are shown separately using a numerically stabilized algorithm; sample variance requires at least two observations. Missing and invalid values are excluded, never treated as zero. The grouped frequency distribution depends on the chosen number of bins.</p></details>
           <h3>Frequency distribution</h3>
           <figure class="visual"><div id="frequency-chart" class="chart-shell" tabindex="0" role="region" aria-label="Histogram chart, scroll horizontally for full view"></div><figcaption>Histogram · Class boundaries are left-inclusive; the final bin includes its upper boundary. Scroll the chart horizontally on small screens; the frequency table provides exact counts.</figcaption></figure>
@@ -71,7 +86,7 @@
         </div>
       </div>
     </section>
-    <section class="footnote" aria-label="Release information"><p><strong>Development alpha</strong> · CSV import, statistical charts and local exports; full accessibility, privacy and public deployment verification remain pending.</p><p>Source project: <a href="https://github.com/SunilgarGusai">GitHub profile</a> · Mathematical conventions are documented in <code>docs/STATISTICAL_METHODS.md</code>.</p></section>
+    <section class="footnote" aria-label="Release information"><p><strong>Development alpha</strong> · CSV import, statistical charts and local exports; full accessibility, privacy and public deployment verification remain pending.</p><p>Source project: <a href="https://github.com/SunilgarGusai/sg-open-lab-datasense">DataSense source repository</a> · Mathematical conventions are documented in <code>docs/STATISTICAL_METHODS.md</code>.</p></section>
   </main>
   <footer class="container footer">SG Open Lab · Transparent and reproducible mathematics</footer>
 </body>

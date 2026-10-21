@@ -26,3 +26,15 @@ table caption.table-caption {text-align:left;font-weight:700;color:var(--ink);pa
 button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,summary:focus-visible,.chart-shell:focus-visible {outline:3px solid var(--accent);outline-offset:3px}
 input[type=file],select {border-color:var(--muted)}
 @media (forced-colors:active) {button,.status,.metric,.quality span {forced-color-adjust:auto} .chart-shell svg {forced-color-adjust:auto}}
+
+/* DS-16: reading-first worked calculation panel, with no embedded HTML or external math renderer. */
+.worked-example { margin-top:18px; padding:17px 20px; border:1px solid #b5cee2; border-radius:12px; background:#f3f8fd; }
+.worked-example h3 { margin:0 0 8px; }
+.worked-example .input-label { margin:10px 0 5px; }
+.explanation-body h4 { margin:18px 0 7px; font-size:1rem; }
+.explanation-formula { background:#fff; border-left:3px solid var(--accent); padding:10px 12px; overflow-wrap:anywhere; }
+.explanation-body ol { padding-left:23px; line-height:1.65; }
+.explanation-body li { margin:5px 0; overflow-wrap:anywhere; }
+.explanation-result { font-weight:700; }
+.explanation-note { color:var(--muted); font-size:.84rem; }
+@media(max-width:440px) { .worked-example { padding:13px; } }

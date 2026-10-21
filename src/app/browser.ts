@@ -5,6 +5,8 @@ import { summaryCsv,frequencyCsv,ogiveCsv,boxplotCsv,analysisManifest,manifestJs
 import { histogramSvg,ogiveSvg,boxplotSvg } from './charts.js';
 import type { CsvDataset,CsvColumnProfile } from '../index.js';
 import type { ExportContext } from '../export/report.js';
+import { explainStatistic } from '../education/explain.js';
+import type { ExplanationMetric } from '../education/explain.js';
 
 const VERSION='0.4.1-alpha.1';
 function byId<T extends HTMLElement>(id:string):T {
@@ -16,6 +18,8 @@ const status=byId<HTMLDivElement>('status');
 const selector=byId<HTMLDivElement>('selector');
 const select=byId<HTMLSelectElement>('column-select');
 const binSelect=byId<HTMLSelectElement>('bin-select');
+const explanationSelect=byId<HTMLSelectElement>('explanation-select');
+const workedExample=byId<HTMLElement>('worked-example');
 const exportControls=byId<HTMLDivElement>('export-controls');
 const workspace=byId<HTMLElement>('workspace');
 function setBusy(busy:boolean):void { workspace.setAttribute('aria-busy',String(busy)); }
@@ -24,6 +28,7 @@ let datasetTitle='';
 let sourceHash:string|null=null;
 let generation=0;
 let report: ReturnType<typeof analysisManifest>|null=null;
+let explanationState:{values:readonly number[];summary:ReturnType<typeof summarize>;frequency:ReturnType<typeof buildFrequency>}|null=null;
 
 function setStatus(message:string,error=false):void {
   status.textContent=message;status.classList.toggle('error',error);
@@ -49,6 +54,20 @@ function fmt(value:number|null|undefined):string {
 function clear(target:string):HTMLElement {
   const root=byId<HTMLElement>(target);root.replaceChildren();return root;
 }
+function renderExplanation():void {
+  if(!explanationState){workedExample.classList.add('hidden');clear('explanation-body');return;}
+  const details=explainStatistic(explanationState.values,explanationState.summary,
+    explanationSelect.value as ExplanationMetric,explanationState.frequency);
+  const container=clear('explanation-body');
+  container.append(el('h4',details.title));
+  const formula=el('p',details.formula);formula.className='explanation-formula';container.append(formula);
+  const list=el('ol');
+  for(const step of details.steps)list.append(el('li',step));
+  container.append(list);
+  const conclusion=el('p',details.conclusion);conclusion.className='explanation-result';container.append(conclusion);
+  const note=el('p',details.note);note.className='explanation-note';container.append(note);
+  workedExample.classList.remove('hidden');
+}
 function render(profile:CsvColumnProfile):void {
   if(!dataset)return;
   const numeric=profile.numeric;
@@ -61,7 +80,7 @@ function render(profile:CsvColumnProfile):void {
   const statistics=clear('statistics');
   const freqTable=clear('frequency-table');
   clear('frequency-chart');clear('ogive-chart');clear('ogive-table');clear('boxplot-chart');clear('boxplot-table');
-  report=null; exportControls.classList.add('hidden');
+  report=null; explanationState=null;renderExplanation();exportControls.classList.add('hidden');
   if(numeric.validCount===0){
     statistics.append(el('p','No valid numeric values. Select another column or correct the CSV.'));
     freqTable.append(el('p','Frequency distributions and chart exports require numeric observations.'));
@@ -77,6 +96,8 @@ function render(profile:CsvColumnProfile):void {
     return;
   }
   const summary=summarize(numeric.values),ogive=makeOgive(dist),box=makeBoxPlot(numeric.values);
+  explanationState={values:numeric.values,summary,frequency:dist};
+  renderExplanation();
   const metrics:readonly [string,number|null|undefined][]=[
     ['Mean',summary.mean],['Median',summary.median],['Min',summary.min],['Max',summary.max],
     ['Mode',summary.modeStatus==='single'?summary.mode[0]:null],['Q1 (Type 7)',summary.q1],
@@ -142,7 +163,7 @@ async function load(data:CsvDataset,title:string,bytes:Uint8Array,token:number):
   setStatus(`Loaded ${title}: ${data.totalRows} rows, ${data.headers.length} columns. Processed locally.${digest?' Source SHA-256 recorded.':' Source hash unavailable.'}`);
 }
 function errorState(error:unknown):void {
-  generation++;dataset=null;datasetTitle='';sourceHash=null;report=null;
+  generation++;dataset=null;datasetTitle='';sourceHash=null;report=null;explanationState=null;renderExplanation();
   byId<HTMLInputElement>('csv-file').value='';setBusy(false);
   selector.classList.add('hidden');exportControls.classList.add('hidden');
   clear('warnings');byId('results').classList.add('hidden');byId('empty-state').classList.remove('hidden');
@@ -163,6 +184,7 @@ byId<HTMLInputElement>('csv-file').addEventListener('change',async(event)=>{
 });
 select.addEventListener('change',()=>{if(dataset)render(getColumnById(dataset,select.value));});
 binSelect.addEventListener('change',()=>{if(dataset)render(getColumnById(dataset,select.value));});
+explanationSelect.addEventListener('change',renderExplanation);
 async function sample(source:string,title:string):Promise<void>{
   byId<HTMLInputElement>('csv-file').value='';const token=++generation;
   setBusy(true);setStatus('Loading built-in sample…');

@@ -50,6 +50,12 @@ source tests, research evidence, credentials or developer dependencies.
 
 See [statistical methods](docs/STATISTICAL_METHODS.md) and [CSV import policy](docs/CSV_IMPORT_POLICY.md) for caveats.
 
+## Step-by-step educational calculations (DS-16 review candidate)
+
+After loading a numeric column, expand **Show the calculation** to inspect the mean, median, Type-7 first/third quartiles, population/sample variance, or a grouped-frequency reconciliation. The display uses the existing validated numerical summaries and deliberately limits raw-value examples on larger datasets. Teaching examples explain the chosen mathematical convention; the explanatory text does not replace the numerical engine.
+
+The source code and tests are in `src/education/explain.ts` and `tests/explanations.test.mjs`. See [DS-15/16 review gates](docs/RELEASE_REVIEW_DS15_DS16.md). This feature is under pull-request review and is not a public-beta announcement.
+
 ## Eight downloadable artifacts
 
 Summary CSV, grouped-frequency CSV, ogive CSV, boxplot CSV, JSON reproducibility manifest, and histogram/ogive/box-plot SVGs. Reports contain derived figures and statistical output, **including numerical outlier values**, but do not copy entire rows. Inspect files before sharing and read the [export policy](docs/EXPORT_POLICY.md) for formula-safety precautions and the optional SHA-256 behavior.
