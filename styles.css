@@ -38,3 +38,7 @@ input[type=file],select {border-color:var(--muted)}
 .explanation-result { font-weight:700; }
 .explanation-note { color:var(--muted); font-size:.84rem; }
 @media(max-width:440px) { .worked-example { padding:13px; } }
+
+/* DS-17 worker progress and cancellation remain keyboard reachable during processing. */
+.cancel-analysis { margin-top:10px; background:#fff; color:#175f95; border:1px solid #175f95; }
+.cancel-analysis:focus-visible {outline:3px solid #175f95;outline-offset:3px}
